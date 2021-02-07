@@ -6,17 +6,20 @@
   "license": "MIT",
   "scripts": {
     "start": "yarn build:live",
+    "test": "./node_modules/.bin/ts-node -- ./src/test.ts",
     "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/server.ts"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios-https-proxy-fix": "^0.17.1",
     "moviedb-promise": "^3.1.6",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "tunnel": "^0.0.6"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/node": "^12.18.0",
     "@types/request": "^2.48.5",
+    "@types/tunnel": "^0.0.1",
     "nodemon": "^2.0.7",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
