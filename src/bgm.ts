@@ -106,10 +106,16 @@ const proxy = {
 
 const axiosConfig = { httpsAgent: httpsOverHttp({ proxy: proxy }) };
 
-export async function searchApi(word: string) {
-    let key = word.replace(/\s/gi, "+");
-    let res = await axios.get<SearchResult>("https://api.bgm.tv/search/subject/" + escape(key), axiosConfig);
-    console.log(res.data);
+export async function searchApi(word: string): Promise<string> {
+    //let key = word.replace(/\s/gi, "+");
+    let res = await axios.get<SearchResult>("https://api.bgm.tv/search/subject/" + encodeURI(word) + "?type=2", axiosConfig);
+    if (res.data.list && res.data.list.length > 0) {
+        console.debug(res.data.list);
+        let item = res.data.list[0];
+
+        return item.name_cn ? item.name_cn : item.name;
+    }
+    return "";
 }
 
 
@@ -125,4 +131,4 @@ export async function searchApi(word: string) {
 // }
 
 
-searchApi("NEW GAME!")
+searchApi("ダンジョンに出会いを求めるのは間違っているだろうかⅢ ")

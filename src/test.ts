@@ -52,8 +52,8 @@ async function kitsuInfo(word: string) {
             let title = titles.ja_jp ? titles.ja_jp : titles.en_jp;
             console.log(colors.green(title));
 
-            let bgm_data = await bgm.search(title);
-            console.log(colors.blue(bgm_data.title));
+            let bgm_data = await bgm.searchApi(title);
+            console.log(colors.blue(bgm_data));
             // if (data.attributes.showType === "TV") {
             //     await tvInfo(title);
             // } else {
