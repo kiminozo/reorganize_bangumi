@@ -8,9 +8,11 @@ import colors = require('colors/safe');
 // import { tokenize, getTokenizer } from "kuromojin";
 import axios from 'axios';
 import { RootObject } from "./kitsuType";
+import * as bgm from "./bgm";
 
 const apiKey: string = "5501399346685e41aa3df9c47ed4671f";
 const db = new MovieDb(apiKey);
+
 
 const proxy = {
     host: "127.0.0.1",
@@ -18,16 +20,45 @@ const proxy = {
 };
 
 const axiosConfig = { httpsAgent: httpsOverHttp({ proxy: proxy }) };
-const params = {
-    language: 'zhCN'
-}
+
+
+
+// var token = bgmAuth.createToken({ grant_type: 'authorization_code', type: 'Bearer' })
+// // Set the token TTL.
+// token.expiresIn(1234) // Seconds.
+// token.expiresIn(new Date('2022-11-08')) // Date.
+
+// token.refresh().catch(e => console.error(e));
+// console.log(token);
+
+// async function auth() {
+//     const data = {
+//         clientId: 'bgm12835d9fe466616a5',
+//         clientSecret: 'f8ff78be428a0642fd0008649394d963',
+//         redirect_uri: "http://127.0.0.1/auth/github/callback",
+//         state: "123134"
+//     }
+//     await axios.post("https://bgm.tv/oauth/access_token", data);
+// }
+// auth();
 
 
 async function kitsuInfo(word: string) {
     try {
         let result = await axios.get<RootObject>("https://kitsu.io/api/edge/anime?filter[text]=" + encodeURI(word));
         if (result.data.data && result.data.data.length > 0) {
-            console.log(result.data.data[0].attributes.titles);
+            let data = result.data.data[0];
+            let titles = data.attributes.titles;
+            let title = titles.ja_jp ? titles.ja_jp : titles.en_jp;
+            console.log(colors.green(title));
+
+            let bgm_data = await bgm.search(title);
+            console.log(colors.blue(bgm_data.title));
+            // if (data.attributes.showType === "TV") {
+            //     await tvInfo(title);
+            // } else {
+            //     await movieInfo(title);
+            // }
         } else {
             console.log(colors.red("not find"));
         }
@@ -40,28 +71,38 @@ async function tvInfo(word: string) {
 
         let res = await db.searchTv({ query: word, language: 'zh-CN' }, axiosConfig);
         if (res.results && res.results.length > 0) {
-            console.debug(res.results);
-            // console.log(colors.green(res.results[0].name));
+            // console.debug(res.results);
+            console.log(colors.blue(res.results[0].name));
             return;
         }
-        let w2 = word.split(" ")[0];
-        if (w2 !== word) {
-            res = await db.searchTv({ query: w2, language: 'zh-CN' }, axiosConfig);
-            if (res.results && res.results.length > 0) {
-                console.log(colors.blue(res.results[0].name));
-                return;
-            }
+        let res2 = await db.searchMovie({ query: word, language: 'zh-CN' }, axiosConfig);
+        if (res2.results && res2.results.length > 0) {
+            // console.debug(res.results);
+            console.log(colors.blue(res2.results[0].title));
+            return;
         }
         console.log(colors.red("not find"));
-        //if (res.results && res.results.length > 0) {
-        // let info = await db.tvInfo({ id: 94664, language: 'zh-CN' }, axiosConfig)
-        // console.log(colors.green(info.name));
-        // }
 
     } catch (error) {
         console.log(colors.red(error));
     }
 }
+
+async function movieInfo(word: string) {
+    try {
+        let res = await db.searchMovie({ query: word, language: 'zh-CN' }, axiosConfig);
+        if (res.results && res.results.length > 0) {
+            // console.debug(res.results);
+            console.log(colors.blue(res.results[0].title));
+            return;
+        }
+        console.log(colors.red("not find"));
+
+    } catch (error) {
+        console.log(colors.red(error));
+    }
+}
+
 const regex = /\[[^\[\]]*\]\s*\[?([^\[\]]+)\]?.*/;
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
