@@ -118,5 +118,5 @@ async function main() {
 }
 
 //main();
-let x = async () => kitsu.searchApi("abc")
-x();
+// let x = async () => kitsu.searchApi("abc")
+// x();
