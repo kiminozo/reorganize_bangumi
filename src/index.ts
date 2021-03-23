@@ -74,7 +74,7 @@ async function log(text: string) {
     await fs.promises.appendFile(output, text + "\r\n");
 }
 
-async function run(root: string, paths: string[]) {
+async function run(descDir: string, paths: string[]) {
 
     for (const path of paths) {
         const name = Path.basename(path);
@@ -86,7 +86,7 @@ async function run(root: string, paths: string[]) {
             if (item != null) {
                 await saveItem(path, item);
                 console.log(colors.green(bgm.title(item)));
-                const desc = Path.join(root, "new", bgm.sort_out_path(item));
+                const desc = Path.join(descDir, bgm.sort_out_path(item));
                 await sort_out_path(path, desc);
                 await log(`${path} --> ${desc}`);
             } else {
@@ -100,10 +100,11 @@ async function run(root: string, paths: string[]) {
 }
 
 async function main() {
-    let root = "output"
-    let paths = await scan(root, 1);
+    let root = Path.join("Z:","old");
+    let descDir = Path.join("Z:","new")
+    let paths = await scan(root, 2);
     console.log(paths);
-    await run(root, paths)
+    await run(descDir, paths);
 }
 
 main();
