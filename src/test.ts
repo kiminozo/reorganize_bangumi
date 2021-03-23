@@ -10,6 +10,7 @@ import axios from 'axios';
 import * as kitsu from "./kitsu";
 import * as bgm from "./bgm";
 import inquirer = require('inquirer');
+import { downImage } from './download';
 
 const apiKey: string = "5501399346685e41aa3df9c47ed4671f";
 const db = new MovieDb(apiKey);
@@ -76,22 +77,44 @@ async function search(line: string): Promise<string> {
     let keyword = extract(line);
     console.log(colors.yellow(keyword));
     //await tvInfo(keyword);
-    let name = await bgm.searchApi(keyword);
-    if (name === null) {
+    let item = await bgm.searchApi(keyword);
+    if (item === null) {
         let jpName = await kitsu.searchApi(keyword);
-        name = await bgm.searchApi(jpName);
+        item = await bgm.searchApi(jpName);
     }
-    return name;
+    if (item != null) {
+        await save(item);
+        return bgm.title(item);
+    } else {
+        console.log(colors.red("not found"));
+    }
+}
+
+async function save(item: bgm.Item) {
+    let dir = `output/${bgm.title(item)} `;
+    try {
+        await fs.promises.mkdir(dir, { recursive: true })
+    } catch (error) {
+
+    }
+    await fs.promises.writeFile(dir + "/data.json", JSON.stringify(item, null, 1));
+    await downImage(item.images.large, dir + "/Poster.jpg");
 }
 
 async function test() {
     // await fs.readFile("tests/files.txt");
+    let output = "output/list.txt";
+    try {
+        await fs.promises.unlink(output);
+    } catch (error) {
+
+    }
 
     let rl = readline.createInterface(fs.createReadStream("tests/files.txt"));
     for await (const line of rl) {
         let name = await search(line);
+        await fs.promises.appendFile(output, `${line} >> ${name} \r\n`);
         await sleep(200);
-        await fs.promises.appendFile("output/names.txt", `${line} >> ${name}\r\n`);
     }
 }
 

@@ -1,7 +1,7 @@
 import fs = require("fs");
 import request = require("request");
 
-export function downImage(url, path) {
+export function downImage(url: string, path: string) {
   return new Promise((resolve, reject) => {
     let file = fs.createWriteStream(path, {
       flags: 'w'

@@ -28,12 +28,12 @@ async function search(line: string): Promise<string> {
     let keyword = extract(line);
     console.log(colors.yellow(keyword));
     //await tvInfo(keyword);
-    let name = await bgm.searchApi(keyword);
-    if (name === null) {
+    let item = await bgm.searchApi(keyword);
+    if (item === null) {
         let jpName = await kitsu.searchApi(keyword);
-        name = await bgm.searchApi(jpName);
+        item = await bgm.searchApi(jpName);
     }
-    return name;
+    return bgm.title(item);
 }
 
 async function run(root, names) {
