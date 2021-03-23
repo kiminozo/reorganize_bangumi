@@ -2,6 +2,7 @@ import superagent = require('superagent');
 import cheerio = require('cheerio');
 import axios from 'axios';
 import { httpsOverHttp } from 'tunnel'
+import inquirer = require('inquirer');
 
 
 function agent(url: string): Promise<string> {
@@ -77,7 +78,7 @@ export interface Collection {
     dropped: number;
 }
 
-export interface List {
+export interface Item {
     id: number;
     url: string;
     type: number;
@@ -96,7 +97,7 @@ export interface List {
 
 export interface SearchResult {
     results: number;
-    list: List[];
+    list: Item[];
 }
 
 const proxy = {
@@ -110,14 +111,38 @@ export async function searchApi(word: string): Promise<string> {
     //let key = word.replace(/\s/gi, "+");
     let res = await axios.get<SearchResult>("https://api.bgm.tv/search/subject/" + encodeURI(word) + "?type=2", axiosConfig);
     if (res.data.list && res.data.list.length > 0) {
-        console.debug(res.data.list);
-        let item = res.data.list[0];
-
-        return item.name_cn ? item.name_cn : item.name;
+        //console.debug(res.data.list);
+        if (res.data.list.length == 1) {
+            let item = res.data.list[0];
+            return item.name_cn ? item.name_cn : item.name;
+        } else {
+            let item = await choice(word, res.data.list);
+            return item.name_cn ? item.name_cn : item.name;
+        }
     }
-    return "";
+    return null;
 }
 
+async function choice(word: string, list: Item[]): Promise<Item> {
+    let choices = list.map(item => item.name_cn ? item.name_cn : item.name);
+    let answers = await inquirer.prompt([
+        {
+            type: 'list',
+            message: `选择BGM提供的中文名称:`,
+            name: 'name',
+            choices: choices,
+            validate: function (answer) {
+                if (answer.length < 1) {
+                    return 'You must choose at least one topping.';
+                }
+                return true;
+            },
+        },
+    ]);
+    // console.log(JSON.stringify(answers, null, '  '));
+    let name = answers.name;
+    return list.find(item => item.name_cn === name || item.name === name);
+}
 
 // async function bgm_info(href: string) {
 //     let html = await agent("https://bgm.tv" + href);
@@ -131,4 +156,4 @@ export async function searchApi(word: string): Promise<string> {
 // }
 
 
-searchApi("ダンジョンに出会いを求めるのは間違っているだろうかⅢ ")
+//searchApi("Tales_of_Zestiria_the_X")

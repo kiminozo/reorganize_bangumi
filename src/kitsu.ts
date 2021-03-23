@@ -1,3 +1,7 @@
+import axios from 'axios';
+import { httpsOverHttp } from 'tunnel'
+import inquirer = require('inquirer');
+import colors = require('colors/safe');
 
 export interface Links {
     self: string;
@@ -238,4 +242,52 @@ export interface Data {
 
 export interface RootObject {
     data: Data[];
+}
+
+
+
+
+export async function searchApi(word: string): Promise<string> {
+    try {
+        let result = await axios.get<RootObject>("https://kitsu.io/api/edge/anime?filter[text]=" + encodeURI(word));
+        if (result.data.data && result.data.data.length > 0) {
+            let data;
+            if (result.data.data.length == 1) {
+                data = result.data.data[0];
+            } else {
+                data = await choice(word, result.data.data);
+            }
+            let titles = data.attributes.titles;
+            let title = titles.ja_jp ? titles.ja_jp : titles.en_jp;
+            console.log(colors.green(title));
+            return title;
+        } else {
+            console.log(colors.red("not find"));
+            return null;
+        }
+    } catch (error) {
+        console.error(colors.red(error));
+    }
+
+}
+
+async function choice(word: string, list: Data[]): Promise<Data> {
+    let choices = list.map(data => data.attributes.titles).map(titles => titles.ja_jp ? titles.ja_jp : titles.en_jp);
+    let answers = await inquirer.prompt([
+        {
+            type: 'list',
+            message: `选择kitsu提供的日文名称:`,
+            name: 'name',
+            choices: choices,
+            validate: function (answer) {
+                if (answer.length < 1) {
+                    return 'You must choose at least one topping.';
+                }
+                return true;
+            },
+        },
+    ]);
+    // console.log(JSON.stringify(answers, null, '  '));
+    let name = answers.name;
+    return list.find(item => item.attributes.titles.ja_jp === name || item.attributes.titles.en_jp === name);
 }
