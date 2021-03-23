@@ -11,6 +11,7 @@ import * as kitsu from "./kitsu";
 import * as bgm from "./bgm";
 import inquirer = require('inquirer');
 import { downImage } from './download';
+import path = require('path');
 
 const apiKey: string = "5501399346685e41aa3df9c47ed4671f";
 const db = new MovieDb(apiKey);
@@ -91,7 +92,7 @@ async function search(line: string): Promise<string> {
 }
 
 async function save(item: bgm.Item) {
-    let dir = `output/${bgm.title(item)} `;
+    let dir = path.join("output", bgm.sort_out_path(item));
     try {
         await fs.promises.mkdir(dir, { recursive: true })
     } catch (error) {

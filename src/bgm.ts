@@ -1,6 +1,7 @@
-import superagent = require('superagent');
-import cheerio = require('cheerio');
+// import superagent = require('superagent');
+// import cheerio = require('cheerio');
 import axios from 'axios';
+import path = require('path');
 import { httpsOverHttp } from 'tunnel'
 import inquirer = require('inquirer');
 
@@ -102,6 +103,27 @@ export function title(item: Item | null) {
     return item.name_cn ? item.name_cn : item.name;
 }
 
+function quarter(date: Date): string {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    if (month <= 3) {
+        return year + "-01";
+    }
+    if (month <= 6) {
+        return year + "-04";
+    }
+    if (month <= 9) {
+        return year + "-07";
+    }
+    return year + "-10";
+}
+
+export function sort_out_path(item: Item | null): string {
+    if (item == null) {
+        return null;
+    }
+    return path.join(quarter(new Date(item.air_date)), title(item))
+}
 
 
 interface SearchResult {
@@ -110,13 +132,14 @@ interface SearchResult {
 }
 
 
-
 const proxy = {
     host: "127.0.0.1",
     port: 7890,
 };
 
 const axiosConfig = { httpsAgent: httpsOverHttp({ proxy: proxy }) };
+
+
 
 export async function searchApi(word: string): Promise<Item> {
     //let key = word.replace(/\s/gi, "+");
@@ -177,4 +200,4 @@ async function choice(word: string, list: Item[]): Promise<Item> {
 // }
 
 
-searchApi("Tales_of_Zestiria_the_X")
+//searchApi("Tales_of_Zestiria_the_X")
