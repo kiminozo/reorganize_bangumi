@@ -266,7 +266,7 @@ export async function searchApi(word: string): Promise<string> {
             return null;
         }
     } catch (error) {
-        console.error(colors.red(error));
+        console.error(colors.red(error.message));
     }
 
 }

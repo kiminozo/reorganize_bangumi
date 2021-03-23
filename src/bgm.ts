@@ -132,18 +132,18 @@ interface SearchResult {
 }
 
 
-const proxy = {
-    host: "127.0.0.1",
-    port: 7890,
-};
+// const proxy = {
+//     host: "127.0.0.1",
+//     port: 7890,
+// };
 
-const axiosConfig = { httpsAgent: httpsOverHttp({ proxy: proxy }) };
+// const axiosConfig = { httpsAgent: httpsOverHttp({ proxy: proxy }) };
 
 
 
 export async function searchApi(word: string): Promise<Item> {
     //let key = word.replace(/\s/gi, "+");
-    let res = await axios.get<SearchResult>("https://api.bgm.tv/search/subject/" + encodeURI(word) + "?type=2", axiosConfig);
+    let res = await axios.get<SearchResult>("https://api.bgm.tv/search/subject/" + encodeURI(word) + "?type=2");
     if (res.data.list && res.data.list.length > 0) {
         //console.debug(res.data.list);
         let item: Item;
@@ -159,7 +159,7 @@ export async function searchApi(word: string): Promise<Item> {
 
 async function infoApi(id: number): Promise<Item> {
     //let key = word.replace(/\s/gi, "+");
-    let res = await axios.get<Item>("https://api.bgm.tv/subject/" + id + "?responseGroup=medium", axiosConfig);
+    let res = await axios.get<Item>("https://api.bgm.tv/subject/" + id + "?responseGroup=medium");
     if (res.data) {
         // console.debug(res.data);
         return res.data;

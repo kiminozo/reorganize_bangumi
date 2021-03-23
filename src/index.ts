@@ -7,13 +7,20 @@ import { downImage } from "./download";
 
 async function scan(path: string, deep: number): Promise<string[]> {
     let stack = await fs.promises.readdir(path);
-    stack = stack.map(p => Path.join(path, p));
+    stack = stack.map(p => Path.join(path, p))
+        .filter(p => fs.lstatSync(p).isDirectory());
     for (let i = 0; i < deep; i++) {
         let dirs = [...stack];
         stack.splice(0, stack.length);
         for (const child of dirs) {
+            // let stat = await fs.promises.lstat(child);
+            // if (!stat.isDirectory()) {
+            //     continue;
+            // }
             let tmp = await fs.promises.readdir(child);
-            tmp.map(p => Path.join(child, p)).forEach(p => stack.push(p));
+            tmp.map(p => Path.join(child, p))
+                .filter(p => fs.lstatSync(p).isDirectory())
+                .forEach(p => stack.push(p));
         }
     }
     return stack;
@@ -40,6 +47,9 @@ async function search(keyword: string): Promise<bgm.Item> {
     let item = await bgm.searchApi(keyword);
     if (item === null) {
         let jpName = await kitsu.searchApi(keyword);
+        if (jpName == null) {
+            return null;
+        }
         item = await bgm.searchApi(jpName);
     }
     return item;
@@ -100,11 +110,13 @@ async function run(descDir: string, paths: string[]) {
 }
 
 async function main() {
-    let root = Path.join("Z:","old");
-    let descDir = Path.join("Z:","new")
+    let root = Path.join("/Volumes/anime", "old");
+    let descDir = Path.join("/Volumes/anime", "新番")
     let paths = await scan(root, 2);
     console.log(paths);
     await run(descDir, paths);
 }
 
-main();
+//main();
+let x = async () => kitsu.searchApi("abc")
+x();

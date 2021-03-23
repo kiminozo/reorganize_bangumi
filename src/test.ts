@@ -12,12 +12,12 @@ import inquirer = require('inquirer');
 import { downImage } from './download';
 import path = require('path');
 
-const proxy = {
-    host: "127.0.0.1",
-    port: 7890,
-};
+// const proxy = {
+//     host: "127.0.0.1",
+//     port: 7890,
+// };
 
-const axiosConfig = { httpsAgent: httpsOverHttp({ proxy: proxy }) };
+// const axiosConfig = { httpsAgent: httpsOverHttp({ proxy: proxy }) };
 
 
 const regex = /\[[^\[\]]*\]\s*\[?([^\[\]]+)\]?.*/;
