@@ -123,32 +123,26 @@ export async function searchApi(word: string): Promise<Item> {
     let res = await axios.get<SearchResult>("https://api.bgm.tv/search/subject/" + encodeURI(word) + "?type=2", axiosConfig);
     if (res.data.list && res.data.list.length > 0) {
         //console.debug(res.data.list);
+        let item: Item;
         if (res.data.list.length == 1) {
-            let item = res.data.list[0];
-            return item;
+            item = res.data.list[0];
         } else {
-            let item = await choice(word, res.data.list);
-            return item;
+            item = await choice(word, res.data.list);
         }
+        return await infoApi(item.id)
     }
     return null;
 }
 
-// export async function infoApi(id: number): Promise<string> {
-//     //let key = word.replace(/\s/gi, "+");
-//     let res = await axios.get<SearchResult>("https://api.bgm.tv/subject/" + id, axiosConfig);
-//     if (res.data.list && res.data.list.length > 0) {
-//         //console.debug(res.data.list);
-//         if (res.data.list.length == 1) {
-//             let item = res.data.list[0];
-//             return item.name_cn ? item.name_cn : item.name;
-//         } else {
-//             let item = await choice(word, res.data.list);
-//             return item.name_cn ? item.name_cn : item.name;
-//         }
-//     }
-//     return null;
-// }
+async function infoApi(id: number): Promise<Item> {
+    //let key = word.replace(/\s/gi, "+");
+    let res = await axios.get<Item>("https://api.bgm.tv/subject/" + id + "?responseGroup=medium", axiosConfig);
+    if (res.data) {
+        console.debug(res.data);
+        return res.data;
+    }
+    return null;
+}
 
 async function choice(word: string, list: Item[]): Promise<Item> {
     let choices = list.map(item => item.name_cn ? item.name_cn : item.name);
@@ -183,4 +177,4 @@ async function choice(word: string, list: Item[]): Promise<Item> {
 // }
 
 
-//searchApi("Tales_of_Zestiria_the_X")
+searchApi("Tales_of_Zestiria_the_X")
