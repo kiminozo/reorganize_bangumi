@@ -119,6 +119,18 @@ async function test() {
     }
 }
 
+async function md() {
+    let rl = readline.createInterface(fs.createReadStream("tests/files.txt"));
+    for await (const line of rl) {
+        try {
+            await fs.promises.mkdir(path.join("output", "2020-01", line), { recursive: true })
+        } catch (error) {
+
+        }
+    }
+}
+
+
 const str = "[Airota&Nekomoe kissaten][Adachi to Shimamura][01-12END][1080p][CHS]";
 
 // async function test2() {
@@ -142,5 +154,5 @@ const str = "[Airota&Nekomoe kissaten][Adachi to Shimamura][01-12END][1080p][CHS
 //search("[Sakurato]One Room Third Season [01-12 Fin][TVRip][1080p][CHS]");
 //tvInfo("アイドルマスター シンデレラガールズ劇場");
 //search("[KTXP][Gochuumon_wa_Usagi_Desu_ka_S3][01-12][GB][720p]")
-test();
+md();
 

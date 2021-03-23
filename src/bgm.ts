@@ -161,7 +161,7 @@ async function infoApi(id: number): Promise<Item> {
     //let key = word.replace(/\s/gi, "+");
     let res = await axios.get<Item>("https://api.bgm.tv/subject/" + id + "?responseGroup=medium", axiosConfig);
     if (res.data) {
-        console.debug(res.data);
+        // console.debug(res.data);
         return res.data;
     }
     return null;
@@ -172,7 +172,7 @@ async function choice(word: string, list: Item[]): Promise<Item> {
     let answers = await inquirer.prompt([
         {
             type: 'list',
-            message: `选择BGM提供的中文名称:`,
+            message: `选择Bgm提供的中文名称:`,
             name: 'name',
             choices: choices,
             validate: function (answer) {
