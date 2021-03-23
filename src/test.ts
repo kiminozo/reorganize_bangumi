@@ -9,6 +9,7 @@ import colors = require('colors/safe');
 import axios from 'axios';
 import * as kitsu from "./kitsu";
 import * as bgm from "./bgm";
+import inquirer = require('inquirer');
 
 const apiKey: string = "5501399346685e41aa3df9c47ed4671f";
 const db = new MovieDb(apiKey);
