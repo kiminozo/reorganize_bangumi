@@ -1,4 +1,3 @@
-import { MovieDb } from 'moviedb-promise'
 //import axios, { AxiosProxyConfig } from 'axios'
 import { httpsOverHttp } from 'tunnel'
 import * as fs from "fs"
@@ -13,10 +12,6 @@ import inquirer = require('inquirer');
 import { downImage } from './download';
 import path = require('path');
 
-const apiKey: string = "5501399346685e41aa3df9c47ed4671f";
-const db = new MovieDb(apiKey);
-
-
 const proxy = {
     host: "127.0.0.1",
     port: 7890,
@@ -24,42 +19,6 @@ const proxy = {
 
 const axiosConfig = { httpsAgent: httpsOverHttp({ proxy: proxy }) };
 
-async function tvInfo(word: string) {
-    try {
-
-        let res = await db.searchTv({ query: word, language: 'zh-CN' }, axiosConfig);
-        if (res.results && res.results.length > 0) {
-            // console.debug(res.results);
-            console.log(colors.blue(res.results[0].name));
-            return;
-        }
-        let res2 = await db.searchMovie({ query: word, language: 'zh-CN' }, axiosConfig);
-        if (res2.results && res2.results.length > 0) {
-            // console.debug(res.results);
-            console.log(colors.blue(res2.results[0].title));
-            return;
-        }
-        console.log(colors.red("not find"));
-
-    } catch (error) {
-        console.log(colors.red(error));
-    }
-}
-
-async function movieInfo(word: string) {
-    try {
-        let res = await db.searchMovie({ query: word, language: 'zh-CN' }, axiosConfig);
-        if (res.results && res.results.length > 0) {
-            // console.debug(res.results);
-            console.log(colors.blue(res.results[0].title));
-            return;
-        }
-        console.log(colors.red("not find"));
-
-    } catch (error) {
-        console.log(colors.red(error));
-    }
-}
 
 const regex = /\[[^\[\]]*\]\s*\[?([^\[\]]+)\]?.*/;
 function sleep(ms) {
