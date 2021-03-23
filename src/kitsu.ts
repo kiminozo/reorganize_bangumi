@@ -257,6 +257,9 @@ export async function searchApi(word: string): Promise<string> {
             } else {
                 data = await choice(word, result.data.data);
             }
+            if (data == null) {
+                return null;
+            }
             let titles = data.attributes.titles;
             let title = titles.ja_jp ? titles.ja_jp : titles.en_jp;
             console.log(colors.green(title));
@@ -273,6 +276,7 @@ export async function searchApi(word: string): Promise<string> {
 
 async function choice(word: string, list: Data[]): Promise<Data> {
     let choices = list.map(data => data.attributes.titles).map(titles => titles.ja_jp ? titles.ja_jp : titles.en_jp);
+    choices.push("[取消]");
     let answers = await inquirer.prompt([
         {
             type: 'list',

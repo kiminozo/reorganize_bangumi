@@ -152,6 +152,9 @@ export async function searchApi(word: string): Promise<Item> {
         } else {
             item = await choice(word, res.data.list);
         }
+        if (item == null) {
+            return null;
+        }
         return await infoApi(item.id)
     }
     return null;
@@ -169,6 +172,7 @@ async function infoApi(id: number): Promise<Item> {
 
 async function choice(word: string, list: Item[]): Promise<Item> {
     let choices = list.map(item => item.name_cn ? item.name_cn : item.name);
+    choices.push("[取消]");
     let answers = await inquirer.prompt([
         {
             type: 'list',

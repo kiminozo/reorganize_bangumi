@@ -66,7 +66,7 @@ async function saveItem(path: string, item: bgm.Item) {
     await downImage(item.images.large, Path.join(path, "Poster.jpg"));
 }
 
-async function sort_out_path(src: string, desc: string) {
+async function move(src: string, desc: string) {
     // let desc = Path.join("output", bgm.sort_out_path(item));
     if (src === desc) {
         return;
@@ -79,12 +79,13 @@ async function sort_out_path(src: string, desc: string) {
     await fs.promises.rename(src, desc);
 }
 
+
 const output = "output.log";
 async function log(text: string) {
     await fs.promises.appendFile(output, text + "\r\n");
 }
 
-async function run(descDir: string, paths: string[]) {
+async function run(descDir: string, backup: string, paths: string[]) {
 
     for (const path of paths) {
         const name = Path.basename(path);
@@ -97,11 +98,14 @@ async function run(descDir: string, paths: string[]) {
                 await saveItem(path, item);
                 console.log(colors.green(bgm.title(item)));
                 const desc = Path.join(descDir, bgm.sort_out_path(item));
-                await sort_out_path(path, desc);
+                await move(path, desc);
                 await log(`${path} --> ${desc}`);
             } else {
                 console.log(colors.red("not found"));
+                await move(path, Path.join(backup, name));
+
                 await log(`${path} --> not found `);
+
             }
         } else {
             await log(`${path} --> extract error `);
@@ -112,11 +116,12 @@ async function run(descDir: string, paths: string[]) {
 async function main() {
     let root = Path.join("/Volumes/anime", "old");
     let descDir = Path.join("/Volumes/anime", "新番")
+    let backup = Path.join("/Volumes/anime", "backup")
     let paths = await scan(root, 2);
     console.log(paths);
-    await run(descDir, paths);
+    await run(descDir, backup, paths);
 }
 
-//main();
+main();
 // let x = async () => kitsu.searchApi("abc")
 // x();
