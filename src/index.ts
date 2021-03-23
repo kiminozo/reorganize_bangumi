@@ -104,8 +104,6 @@ async function main() {
     let paths = await scan(root, 1);
     console.log(paths);
     await run(root, paths)
-
-    //await sort_out_path(paths[0], 'output/2020-07/安达与岛村');
 }
 
 main();
