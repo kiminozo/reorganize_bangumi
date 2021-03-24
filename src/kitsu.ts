@@ -244,43 +244,77 @@ export interface RootObject {
     data: Data[];
 }
 
-
+function select_title(titles: Titles) {
+    if (titles.zh_cn) {
+        return titles.zh_cn;
+    }
+    if (titles.ja_jp) {
+        return titles.ja_jp;
+    }
+    if (titles.en_jp) {
+        return titles.en_jp;
+    }
+    if (titles.en_cn) {
+        return titles.en_cn;
+    }
+    if (titles.en_us) {
+        return titles.en_us;
+    }
+    console.error(titles);
+    return titles.en;
+}
 
 
 export async function searchApi(word: string): Promise<string> {
     try {
         let result = await axios.get<RootObject>("https://kitsu.io/api/edge/anime?filter[text]=" + encodeURI(word));
         if (result.data.data && result.data.data.length > 0) {
-            let data;
+            let title: string;
             if (result.data.data.length == 1) {
-                data = result.data.data[0];
+                const data = result.data.data[0];
+                title = select_title(data.attributes.titles);
+                console.log(colors.green(title));
+                return title;
             } else {
-                data = await choice(word, result.data.data);
+                title = await choice(word, result.data.data);
+                return title;
             }
-            if (data == null) {
+        } else {
+            //console.log(colors.red("not find"));
+            let newWord = await input(word);
+            if (newWord && newWord === word) {
                 return null;
             }
-            let titles = data.attributes.titles;
-            let title = titles.ja_jp ? titles.ja_jp : titles.en_jp;
-            console.log(colors.green(title));
-            return title;
-        } else {
-            console.log(colors.red("not find"));
-            return null;
+            return searchApi(newWord);
         }
     } catch (error) {
-        console.error(colors.red(error.message));
+        console.error(colors.red(error));
     }
 
 }
 
-async function choice(word: string, list: Data[]): Promise<Data> {
-    let choices = list.map(data => data.attributes.titles).map(titles => titles.ja_jp ? titles.ja_jp : titles.en_jp);
-    choices.push("[取消]");
+async function input(word: string): Promise<string> {
+
+    let answer = await inquirer.prompt([{
+        type: 'input',
+        name: 'name',
+        message: "kitsu未找到，是否调整名称:",
+        default: word,
+    }])
+
+    console.log(answer.name);
+    return answer.name;
+}
+
+async function choice(word: string, list: Data[]): Promise<string> {
+    const titles = list.map(data => data.attributes.titles)
+        .map(p => select_title(p));
+    const choices = [...titles, "[取消]"];
+    //console.log(choices);
     let answers = await inquirer.prompt([
         {
             type: 'list',
-            message: `选择kitsu提供的日文名称:`,
+            message: `选择kitsu提供的名称:`,
             name: 'name',
             choices: choices,
             validate: function (answer) {
@@ -293,5 +327,11 @@ async function choice(word: string, list: Data[]): Promise<Data> {
     ]);
     // console.log(JSON.stringify(answers, null, '  '));
     let name = answers.name;
-    return list.find(item => item.attributes.titles.ja_jp === name || item.attributes.titles.en_jp === name);
+    return titles.find(p => p === name);
 }
+
+// async function test() {
+//     const item = await searchApi(" Fugou Keiji Balance - UNLIMITED")
+//     console.log(item)
+// }
+// test();

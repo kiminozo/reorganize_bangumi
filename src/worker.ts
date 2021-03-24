@@ -133,3 +133,8 @@ export class Worker {
     }
 }
 
+// async function test() {
+//     const item = await search("エスカ&ロジーのアトリエ ~黄昏の空の錬金術士~")
+//     console.log(item)
+// }
+// test();

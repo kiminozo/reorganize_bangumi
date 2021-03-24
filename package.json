@@ -8,7 +8,9 @@
     "start": "./node_modules/.bin/ts-node -- ./src/index.ts",
     "cli": "./node_modules/.bin/ts-node -- ./src/cli.ts",
     "test": "./node_modules/.bin/ts-node -- ./src/test.ts",
-    "bgm": "./node_modules/.bin/ts-node -- ./src/bgm.ts",
+    "test:worker": "./node_modules/.bin/ts-node -- ./src/worker.ts",
+    "test:bgm": "./node_modules/.bin/ts-node -- ./src/bgm.ts",
+    "test:kitsu": "./node_modules/.bin/ts-node -- ./src/kitsu.ts",
     "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts"
   },
   "dependencies": {

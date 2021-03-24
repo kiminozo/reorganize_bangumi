@@ -4,6 +4,7 @@ import axios from 'axios';
 import path = require('path');
 import { httpsOverHttp } from 'tunnel'
 import inquirer = require('inquirer');
+import { inspect } from 'node:util';
 
 
 // function agent(url: string): Promise<string> {
@@ -157,7 +158,11 @@ export async function searchApi(word: string): Promise<Item> {
         }
         return await infoApi(item.id)
     }
-    return null;
+    const newWord = await input(word);
+    if (newWord && newWord === word) {
+        return null;
+    }
+    return await searchApi(newWord);
 }
 
 async function infoApi(id: number): Promise<Item> {
@@ -170,6 +175,19 @@ async function infoApi(id: number): Promise<Item> {
     return null;
 }
 
+async function input(word: string): Promise<string> {
+
+    let answer = await inquirer.prompt([{
+        type: 'input',
+        name: 'name',
+        message: "bgm未找到，是否调整名称:",
+        default: word,
+    }])
+
+    console.log(answer.name);
+    return answer.name;
+}
+
 async function choice(word: string, list: Item[]): Promise<Item> {
     let choices = list.map(item => item.name_cn ? item.name_cn : item.name);
     choices.push("[取消]");
@@ -179,12 +197,6 @@ async function choice(word: string, list: Item[]): Promise<Item> {
             message: `选择Bgm提供的中文名称:`,
             name: 'name',
             choices: choices,
-            validate: function (answer) {
-                if (answer.length < 1) {
-                    return 'You must choose at least one topping.';
-                }
-                return true;
-            },
         },
     ]);
     // console.log(JSON.stringify(answers, null, '  '));
@@ -203,5 +215,9 @@ async function choice(word: string, list: Item[]): Promise<Item> {
 
 // }
 
+// async function test() {
+//     const item = await searchApi("エスカ&ロジーのアトリエ ~黄昏の空の錬金術士~")
+//     console.log(item)
+// }
+// test();
 
-//searchApi("Tales_of_Zestiria_the_X")
