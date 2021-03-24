@@ -11,6 +11,7 @@ import * as bgm from "./bgm";
 import inquirer = require('inquirer');
 import { downImage } from './download';
 import path = require('path');
+import { extract } from './match';
 
 // const proxy = {
 //     host: "127.0.0.1",
@@ -21,25 +22,27 @@ import path = require('path');
 
 
 const regex = /\[[^\[\]]*\]\s*\[?([^\[\]]+)\]?.*/;
+const numberReg = /^[0-9\-]+$/;
+const regex2 = /\[?([^\[\]]+)\]?.*/;
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function extract(line: string): string {
-    let result = regex.exec(line);
-    let t1 = result ? result[1] : line;
-    let t2 = t1.replace(/_/gi, " ")
-    return t2;
-}
+
 
 async function search(line: string): Promise<string> {
     console.log(colors.gray(line));
     let keyword = extract(line);
     console.log(colors.yellow(keyword));
     //await tvInfo(keyword);
+    return null;
     let item = await bgm.searchApi(keyword);
     if (item === null) {
         let jpName = await kitsu.searchApi(keyword);
+        if (jpName === null) {
+            return null;
+        }
         item = await bgm.searchApi(jpName);
     }
     if (item != null) {
@@ -77,12 +80,13 @@ async function test() {
         await sleep(200);
     }
 }
+//test();
 
 async function md() {
-    let rl = readline.createInterface(fs.createReadStream("tests/files.txt"));
+    let rl = readline.createInterface(fs.createReadStream("tests/files2.txt"));
     for await (const line of rl) {
         try {
-            await fs.promises.mkdir(path.join("output", "2020-01", line), { recursive: true })
+            await fs.promises.mkdir(path.join("output", "old", "2020", "2020-01", line), { recursive: true })
         } catch (error) {
 
         }
