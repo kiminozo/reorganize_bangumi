@@ -2,9 +2,8 @@
 // import cheerio = require('cheerio');
 import axios from 'axios';
 import path = require('path');
-import { httpsOverHttp } from 'tunnel'
+//import { httpsOverHttp } from 'tunnel'
 import inquirer = require('inquirer');
-import { inspect } from 'node:util';
 
 
 // function agent(url: string): Promise<string> {
@@ -156,11 +155,11 @@ export async function searchApi(word: string): Promise<Item> {
                 return null;
             }
             if (cho === ChoiceType.Input) {
-                const newWord = await input("输入自定义名称:", word);
-                if (newWord && newWord === word) {
+                const new_word = await input("输入自定义名称:", word);
+                if (new_word && new_word === word) {
                     return null;
                 }
-                return await searchApi(newWord);
+                return await searchApi(new_word);
             }
             item = cho;
         }
@@ -224,16 +223,6 @@ async function choice(word: string, list: Item[]): Promise<Item | ChoiceType> {
     return list.find(item => item.id === id) ?? ChoiceType.Cancel;
 }
 
-// async function bgm_info(href: string) {
-//     let html = await agent("https://bgm.tv" + href);
-//     const $ = cheerio.load(html);
-//     $("#infobox li").each((_, ele) => {
-//         let type = $("span", ele).text();
-//         let val = $(ele).children().text();
-//         console.log({ type, val })
-//     });
-
-// }
 
 // async function test() {
 //     const item = await searchApi("奇诺之旅2")
