@@ -151,14 +151,25 @@ export async function searchApi(word: string): Promise<Item> {
         if (res.data.list.length == 1) {
             item = res.data.list[0];
         } else {
-            item = await choice(word, res.data.list);
+            const cho = await choice(word, res.data.list);
+            if (cho === ChoiceType.Cancel) {
+                return null;
+            }
+            if (cho === ChoiceType.Input) {
+                const newWord = await input("输入自定义名称:", word);
+                if (newWord && newWord === word) {
+                    return null;
+                }
+                return await searchApi(newWord);
+            }
+            item = cho;
         }
         if (item == null) {
             return null;
         }
         return await infoApi(item.id)
     }
-    const newWord = await input(word);
+    const newWord = await input("bgm未找到，是否调整名称:", word);
     if (newWord && newWord === word) {
         return null;
     }
@@ -175,12 +186,12 @@ async function infoApi(id: number): Promise<Item> {
     return null;
 }
 
-async function input(word: string): Promise<string> {
+async function input(message: string, word: string): Promise<string> {
 
     let answer = await inquirer.prompt([{
         type: 'input',
         name: 'name',
-        message: "bgm未找到，是否调整名称:",
+        message,
         default: word,
     }])
 
@@ -188,11 +199,13 @@ async function input(word: string): Promise<string> {
     return answer.name;
 }
 
+enum ChoiceType { Cancel = 0, Input = -1 }
 
-async function choice(word: string, list: Item[]): Promise<Item> {
+async function choice(word: string, list: Item[]): Promise<Item | ChoiceType> {
     //console.log(list);
     let choices = list.map(item => { return { name: `${item.name_cn} | ${item.name}`, value: item.id } });
-    choices.push({ name: "[取消]", value: 0 });
+    choices.push({ name: "[自定义]", value: ChoiceType.Input });
+    choices.push({ name: "[取消]", value: ChoiceType.Cancel });
     let answers = await inquirer.prompt([
         {
             type: 'list',
@@ -202,7 +215,13 @@ async function choice(word: string, list: Item[]): Promise<Item> {
         },
     ]);
     const id = answers.id;
-    return list.find(item => item.id === id);
+    if (id == ChoiceType.Cancel) {
+        return ChoiceType.Cancel;
+    }
+    if (id == ChoiceType.Input) {
+        return ChoiceType.Input;
+    }
+    return list.find(item => item.id === id) ?? ChoiceType.Cancel;
 }
 
 // async function bgm_info(href: string) {
@@ -216,9 +235,9 @@ async function choice(word: string, list: Item[]): Promise<Item> {
 
 // }
 
-// async function test() {
-//     const item = await searchApi("奇诺之旅")
-//     console.log(item)
-// }
-// test();
+async function test() {
+    const item = await searchApi("奇诺之旅2")
+    console.log(item)
+}
+test();
 

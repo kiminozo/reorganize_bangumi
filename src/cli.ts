@@ -3,7 +3,8 @@ import inquirer = require('inquirer');
 async function run() {
     let choices = [{ name: "A", value: 1 },
     { name: "A", value: 2 },
-    { name: "B", value: 3 }]
+    { name: "B", value: 3 }];
+
     let answers = await inquirer.prompt<any>([
         {
             type: 'list',
@@ -11,6 +12,11 @@ async function run() {
             message: 'Select toppings',
             choices: choices,
         },
+        {
+            type: 'input',
+            name: 'name',
+            message: "输入:",
+        }
     ]);
     console.log(answers);
 }
