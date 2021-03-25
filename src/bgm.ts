@@ -235,9 +235,9 @@ async function choice(word: string, list: Item[]): Promise<Item | ChoiceType> {
 
 // }
 
-async function test() {
-    const item = await searchApi("奇诺之旅2")
-    console.log(item)
-}
-test();
+// async function test() {
+//     const item = await searchApi("奇诺之旅2")
+//     console.log(item)
+// }
+// test();
 
