@@ -188,20 +188,21 @@ async function input(word: string): Promise<string> {
     return answer.name;
 }
 
+
 async function choice(word: string, list: Item[]): Promise<Item> {
-    let choices = list.map(item => item.name_cn ? item.name_cn : item.name);
-    choices.push("[取消]");
+    //console.log(list);
+    let choices = list.map(item => { return { name: `${item.name_cn} | ${item.name}`, value: item.id } });
+    choices.push({ name: "[取消]", value: 0 });
     let answers = await inquirer.prompt([
         {
             type: 'list',
             message: `选择Bgm提供的中文名称:`,
-            name: 'name',
+            name: 'id',
             choices: choices,
         },
     ]);
-    // console.log(JSON.stringify(answers, null, '  '));
-    let name = answers.name;
-    return list.find(item => item.name_cn === name || item.name === name);
+    const id = answers.id;
+    return list.find(item => item.id === id);
 }
 
 // async function bgm_info(href: string) {
@@ -216,7 +217,7 @@ async function choice(word: string, list: Item[]): Promise<Item> {
 // }
 
 // async function test() {
-//     const item = await searchApi("エスカ&ロジーのアトリエ ~黄昏の空の錬金術士~")
+//     const item = await searchApi("奇诺之旅")
 //     console.log(item)
 // }
 // test();
