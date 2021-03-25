@@ -6,6 +6,10 @@ import Path = require('path');
 import { downImage } from "./download";
 import { extract } from "./match";
 
+function sleep(ms): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function scan(path: string, deep: number): Promise<string[]> {
     let stack = await fs.promises.readdir(path);
     stack = stack.map(p => Path.join(path, p))
@@ -114,12 +118,14 @@ export class Worker {
                         console.log(colors.red(error.message));
                         await this.backup(path, Path.join("429", bgm.sort_out_path(item)));
                         await log(`${path} --> move failed`);
+
                     }
                 } else {
                     console.log(colors.red("not found"));
                     await this.backup(path, Path.join("404", name));
                     await log(`${path} --> not found `);
                 }
+                await sleep(1000);
             } else {
                 await log(`${path} --> extract error `);
             }
