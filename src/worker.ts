@@ -134,7 +134,11 @@ export class Worker {
 
     private async backup(srcPath: string, descPath: string) {
         if (this.config.backup) {
-            await move(srcPath, Path.join(this.config.backup, descPath));
+            try {
+                await move(srcPath, Path.join(this.config.backup, descPath));
+            } catch {
+                await move(srcPath, Path.join(this.config.backup, "error", descPath));
+            }
         }
     }
 }

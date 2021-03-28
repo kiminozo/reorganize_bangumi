@@ -143,7 +143,8 @@ interface SearchResult {
 
 export async function searchApi(word: string): Promise<Item> {
     //let key = word.replace(/\s/gi, "+");
-    let res = await axios.get<SearchResult>("https://api.bgm.tv/search/subject/" + encodeURI(word) + "?type=2");
+    let res = await axios.get<SearchResult>("https://api.bgm.tv/search/subject/" + encodeURI(word) + "?type=2"
+        , { timeout: 15000 });
     if (res.data.list && res.data.list.length > 0) {
         //console.debug(res.data.list);
         let item: Item;
@@ -177,9 +178,9 @@ export async function searchApi(word: string): Promise<Item> {
 
 async function infoApi(id: number): Promise<Item> {
     //let key = word.replace(/\s/gi, "+");
-    let res = await axios.get<Item>("https://api.bgm.tv/subject/" + id + "?responseGroup=medium");
+    let res = await axios.get<Item>("https://api.bgm.tv/subject/" + id + "?responseGroup=medium", { timeout: 15000 });
     if (res.data) {
-        // console.debug(res.data);
+        console.debug(res.data.images.large);
         return res.data;
     }
     return null;
