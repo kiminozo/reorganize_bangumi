@@ -106,13 +106,13 @@ export function title(item: Item | null) {
 function quarter(date: Date): string {
     const year = date.getFullYear();
     const month = date.getMonth();
-    if (month <= 3) {
+    if (month < 3) {
         return year + "-01";
     }
-    if (month <= 6) {
+    if (month < 6) {
         return year + "-04";
     }
-    if (month <= 9) {
+    if (month < 9) {
         return year + "-07";
     }
     return year + "-10";
@@ -231,3 +231,7 @@ async function choice(word: string, list: Item[]): Promise<Item | ChoiceType> {
 // }
 // test();
 
+// console.log(quarter(new Date("2019-04-02")))
+// const date = new Date("2019-01-02");
+// const month = date.getMonth();;
+// console.log(month);
