@@ -5,31 +5,13 @@ import colors = require('colors/safe');
 import Path = require('path');
 import { downImage } from "./download";
 import { extract } from "./match";
+import { scan, move } from "./files";
 
 function sleep(ms): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function scan(path: string, deep: number): Promise<string[]> {
-    let stack = await fs.promises.readdir(path);
-    stack = stack.map(p => Path.join(path, p))
-        .filter(p => fs.lstatSync(p).isDirectory());
-    for (let i = 0; i < deep; i++) {
-        let dirs = [...stack];
-        stack.splice(0, stack.length);
-        for (const child of dirs) {
-            // let stat = await fs.promises.lstat(child);
-            // if (!stat.isDirectory()) {
-            //     continue;
-            // }
-            let tmp = await fs.promises.readdir(child);
-            tmp.map(p => Path.join(child, p))
-                .filter(p => fs.lstatSync(p).isDirectory())
-                .forEach(p => stack.push(p));
-        }
-    }
-    return stack;
-}
+
 
 async function search(keyword: string): Promise<bgm.Item> {
     //console.log(colors.gray(line));
@@ -58,18 +40,6 @@ async function saveItem(path: string, item: bgm.Item) {
     await downImage(item.images.large, Path.join(path, "Poster.jpg"));
 }
 
-async function move(src: string, desc: string) {
-    // let desc = Path.join("output", bgm.sort_out_path(item));
-    if (src === desc) {
-        return;
-    }
-    try {
-        await fs.promises.mkdir(Path.dirname(desc), { recursive: true })
-    } catch (error) {
-
-    }
-    await fs.promises.rename(src, desc);
-}
 
 
 const output = "output.log";

@@ -100,13 +100,14 @@ export function title(item: Item | null) {
     if (item == null) {
         return null;
     }
-    return item.name_cn ? item.name_cn : item.name;
+    const t = item.name_cn ? item.name_cn : item.name;
+    return t.replace(/\//gi, " ");
 }
 
-function quarter(date: Date): string {
+export function quarter(date: Date): string {
     const year = date.getFullYear();
-    const month = date.getMonth();
-    if (month < 3) {
+    const month = date.getMonth() + 1;
+    if (month <= 3) {
         return year + "-01";
     }
     if (month < 6) {
