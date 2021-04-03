@@ -45,6 +45,6 @@ async function reorganizeAll(root: string, deep: number) {
     await Promise.all(dirs.map(dir => reorganizePath(root, dir)));
 }
 
-reorganizeAll(Path.join("output", "新番"), 1)
+reorganizeAll(Path.join("/Volumes/anime", "新番"), 1)
 
 //console.log("fate/stay night".replace(/\//gi, " "));

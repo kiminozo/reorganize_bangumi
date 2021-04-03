@@ -1,7 +1,7 @@
 // import superagent = require('superagent');
 // import cheerio = require('cheerio');
 import axios from 'axios';
-import path = require('path');
+import Path = require('path');
 //import { httpsOverHttp } from 'tunnel'
 import inquirer = require('inquirer');
 
@@ -107,23 +107,36 @@ export function title(item: Item | null) {
 export function quarter(date: Date): string {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
+    let years: string;
+    if (year < 1990) {
+        years = "1980s"
+    } else if (year < 2000) {
+        years = "1990s"
+    } else if (year < 2010) {
+        years = "2000s"
+    } else if (year < 2020) {
+        years = "2010s"
+    } else {
+        years = "2020s"
+    }
+    let quarter: string;
     if (month <= 3) {
-        return year + "-01";
+        quarter = year + "-01";
+    } else if (month < 6) {
+        quarter = year + "-04";
+    } else if (month < 9) {
+        quarter = year + "-07";
+    } else {
+        quarter = year + "-10";
     }
-    if (month < 6) {
-        return year + "-04";
-    }
-    if (month < 9) {
-        return year + "-07";
-    }
-    return year + "-10";
+    return Path.join(years, quarter);
 }
 
 export function sort_out_path(item: Item | null): string {
     if (item == null) {
         return null;
     }
-    return path.join(quarter(new Date(item.air_date)), title(item))
+    return Path.join(quarter(new Date(item.air_date)), title(item))
 }
 
 
@@ -232,7 +245,7 @@ async function choice(word: string, list: Item[]): Promise<Item | ChoiceType> {
 // }
 // test();
 
-// console.log(quarter(new Date("2019-04-02")))
+//console.log(quarter(new Date("2019-04-02")))
 // const date = new Date("2019-01-02");
 // const month = date.getMonth();;
 // console.log(month);
