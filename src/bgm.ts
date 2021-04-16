@@ -1,5 +1,3 @@
-// import superagent = require('superagent');
-// import cheerio = require('cheerio');
 import axios from 'axios';
 import path = require('path');
 //import { httpsOverHttp } from 'tunnel'
