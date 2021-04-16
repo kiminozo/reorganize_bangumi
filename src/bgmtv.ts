@@ -2,6 +2,14 @@ import superagent = require('superagent');
 import cheerio = require('cheerio');
 import * as fs from "fs"
 import Path = require('path');
+import low = require('lowdb');
+import FileSync = require('lowdb/adapters/FileSync')
+import BangumiDB, { WatchType, WatchInfo } from './bgmdb'
+
+function sleep(ms): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 
 function agent(url: string): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -15,33 +23,18 @@ function agent(url: string): Promise<string> {
             })
     })
 }
-type WatchType = 'collect' | 'wish' | 'do' | 'on_hold' | 'dropped'
-
-interface WatchData {
-    id: number;
-    title: string;
-
-}
-
-interface WatchInfo {
-    type: WatchType;
-    count: number;
-    dataList?: WatchData[];
-}
-
-interface UserWatchInfo {
-    user: string;
-    info: WatchInfo[];
-}
 
 
-async function getWatch(user: string, type: WatchType, page: number): Promise<WatchData[]> {
+
+
+
+async function getWatch(user: string, type: WatchType, page: number): Promise<WatchInfo[]> {
     const url = `http://bgm.tv/anime/list/${user}/${type}?page=${page}`;
     console.log(url);
     let html = await agent(url);
     const subStart = '/subject/'.length;
     const $ = cheerio.load(html);
-    const dataList: WatchData[] = [];
+    const dataList: WatchInfo[] = [];
     $("#browserItemList h3 a").each((_index, ele) => {
         const item = $(ele);
         if (item == null) {
@@ -50,12 +43,13 @@ async function getWatch(user: string, type: WatchType, page: number): Promise<Wa
         //  console.log(item.text());
         const href = item.attr()['href'];
         const id = parseInt(href.substring(subStart, href.length));
-        const data: WatchData = { id, title: item.text() };
-        console.log(data);
-        dataList.push(data);
+        // const data: WatchInfo = { id, title: item.text(), type };
+        // console.log(data);
+        dataList.push({ id, title: item.text(), type });
     });
     //console.debug(dataList.length);
     //$("",item)
+    await sleep(50);
     return dataList;
 }
 const regex = /(\S+)\s{1}\((\d+)\)/;
@@ -80,7 +74,7 @@ async function getInfo(user: string) {
     console.log(url);
     let html = await agent(url);
     const $ = cheerio.load(html);
-    const infoList: WatchInfo[] = [];
+    const infoList: { type: WatchType, count: number }[] = [];
     $("ul.navSubTabs li a span").each((_index, ele) => {
         const item = $(ele);
         if (item == null) {
@@ -88,34 +82,46 @@ async function getInfo(user: string) {
         }
         const text = item.text();
         const matches = regex.exec(text);
-        const info: WatchInfo = {
+        const info = {
             type: getWatchType(matches[1]),
             count: parseInt(matches[2]),
         }
         infoList.push(info);
         // console.log(info);
     });
+    const dataListList: WatchInfo[][] = [];
 
     for (const info of infoList) {
         const pageCount = info.count / 24 + 1;
-        const dataList: WatchData[][] = [];
         for (let page = 1; page < pageCount; page++) {
             const data = await getWatch(user, info.type, page);
-            dataList.push(data);
+            dataListList.push(data);
         }
-        info.dataList = dataList.flat();
+
         //console.log(info.dataList);
-        // break;
+        //break;
     }
+    const dataList = dataListList.flat();
+    // for (const info of infoList) {
+    //     console.log(info);
+    // }
 
-    for (const info of infoList) {
-        console.log(info);
-    }
+    //const userInfo: UserWatchInfo = { user, info: dataList };
+    // await fs.promises.writeFile(Path.join("output", `user-${user}.json`),
+    //     JSON.stringify(userInfo, null, 1));
 
-    const userInfo: UserWatchInfo = { user, info: infoList };
-    await fs.promises.writeFile(Path.join("output", `user-${user}.json`),
-        JSON.stringify(userInfo, null, 1));
+
+    //db.defaults({ info: [], user: {} }).write();
+    const db = new BangumiDB(user);
+    db.save(dataList);
 }
 
-//getWatch("kiminozo", 'collect', 1);
-getInfo("kiminozo")
+getInfo("kiminozo");
+
+
+
+// const info2 = db.get('info')
+//     .filter(p => p.type === 'collect')
+//     .get('dataList')
+//     .value()
+// console.log(info2);
