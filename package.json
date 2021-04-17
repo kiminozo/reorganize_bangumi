@@ -8,6 +8,8 @@
     "start": "./node_modules/.bin/ts-node -- ./src/index.ts",
     "cli": "./node_modules/.bin/ts-node -- ./src/cli.ts",
     "test": "./node_modules/.bin/ts-node -- ./src/test.ts",
+    "tv": "./node_modules/.bin/ts-node -- ./src/bgmtv.ts",
+    "db": "./node_modules/.bin/ts-node -- ./src/bgmdb.ts",
     "reo": "./node_modules/.bin/ts-node -- ./src/reorganize.ts",
     "test:worker": "./node_modules/.bin/ts-node -- ./src/worker.ts",
     "test:bgm": "./node_modules/.bin/ts-node -- ./src/bgm.ts",
@@ -16,15 +18,19 @@
   },
   "dependencies": {
     "axios-https-proxy-fix": "^0.17.1",
+    "cheerio": "^1.0.0-rc.6",
     "colors": "^1.4.0",
     "inquirer": "^8.0.0",
+    "lowdb": "^1.0.0",
     "request": "^2.88.2",
     "superagent": "^6.1.0",
     "tunnel": "^0.0.6"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
+    "@types/cheerio": "^0.22.28",
     "@types/inquirer": "^7.3.1",
+    "@types/lowdb": "^1.0.9",
     "@types/node": "^12.20.6",
     "@types/request": "^2.48.5",
     "@types/superagent": "^4.1.10",
