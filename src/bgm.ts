@@ -87,11 +87,26 @@ export interface Item {
     air_date: string;
     air_weekday: number;
     images: Images;
-    eps: number;
+    eps: number | EpItem[];
     eps_count: number;
     rating: Rating;
     rank: number;
     collection: Collection;
+}
+
+
+export interface EpItem {
+    id: number
+    url: string//"http://bgm.tv/ep/892649"
+    type: 0
+    sort: number //1
+    name: string//"優子の目覚め!! 家庭の事情で今日から魔族"
+    name_cn: string// "优子的觉醒！！因为家庭原因今天开始成为魔族"
+    duration: string// "00: 24: 05"
+    airdate: string//"2019 - 07 - 11"
+    comment: number
+    desc: string//"どこにでもいる普通の女子高生・吉田優子は、\r\nある朝目が覚めるとツノと尻尾が生えていた。\r\nパニクる優子に母・清子が告げたのは衝撃の事実。\r\n「吉田家は古代より闇を糧とするもの……封印されし『闇の一族』の末裔なのです」\r\n一族の封印を解くべく、闇の力に目覚めた優子と\r\n一族の宿敵・魔法少女との戦いが今、幕をあける……?\r\n\r\nシナリオ：大知慶一郎　絵コンテ：桜井弘明　演出：原田奈奈　総作画監督：大塚舞\r\n作画監督：大塚舞・林信秀・植竹康彦・アラタハヤト",
+    status: string//"Air"
 }
 
 export function title(item: Item | null) {
@@ -190,7 +205,7 @@ export async function searchApi(word: string): Promise<Item> {
 
 async function infoApi(id: number): Promise<Item> {
     //let key = word.replace(/\s/gi, "+");
-    let res = await axios.get<Item>("https://api.bgm.tv/subject/" + id + "?responseGroup=medium", { timeout: 15000 });
+    let res = await axios.get<Item>("https://api.bgm.tv/subject/" + id + "?responseGroup=large", { timeout: 15000 });
     if (res.data) {
         console.debug(res.data.images.large);
         return res.data;
