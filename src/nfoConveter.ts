@@ -11,6 +11,20 @@ async function testRead(): Promise<Item> {
     return item
 }
 
+async function findNames(path: string, epCount: number): Promise<string[]> {
+    const files = await fs.promises.readdir("tests")
+    const nameList = []
+    for await (const name of files) {
+        if ((await fs.promises.stat(name)).isDirectory) {
+            continue
+        }
+        nameList.push(name)
+    }
+    nameList.filter(p => {
+
+    })
+}
+
 function conveter(item: Item) {
     const title = item.name_cn != null ? item.name_cn : item.name
     const summary = item.summary
@@ -53,6 +67,16 @@ async function test() {
     const nfo = conveter(item)
     console.log(nfo)
     await saveNfo(nfo, "output")
+
+    // for (let i = 0; i < 12; i++) {
+    //     const path = Path.join("tests", `[Airota & Nekomoe kissaten][Machikado Mazoku][0${i}][720p][CHS].mp4`)
+    //     await fs.promises.writeFile(path, "", "utf-8")
+    // }
 }
 
-test()
+async function test2() {
+    const names = await findNames("tests", 12)
+    console.log(names)
+}
+
+test2()
