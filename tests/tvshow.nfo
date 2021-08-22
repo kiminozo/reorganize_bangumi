@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<tvshow>
+  <plot><![CDATA[某日突然觉醒暗之力的女子高中生 吉田优子，为着解除施加在暗之一族身上的诅咒，为打倒魔法少女不懈努力。竟对曾经的救命恩人下手？！
+但是却完全没有胜算！
+废柴贫穷魔族与沉稳肌肉魔法少女之间的日常魔法喜剧，就此开幕！]]></plot>
+  <outline><![CDATA[某日突然觉醒暗之力的女子高中生 吉田优子，为着解除施加在暗之一族身上的诅咒，为打倒魔法少女不懈努力。竟对曾经的救命恩人下手？！
+但是却完全没有胜算！
+废柴贫穷魔族与沉稳肌肉魔法少女之间的日常魔法喜剧，就此开幕！]]></outline>
+  <lockdata>false</lockdata>
+  <lockedfields>Name|OfficialRating|Genres|Studios</lockedfields>
+  <dateadded>2021-03-12 06:15:51</dateadded>
+  <title>街角魔族</title>
+  <originaltitle>まちカドまぞく</originaltitle>
+  <rating>8.2</rating>
+  <year>2019</year>
+  <sorttitle>街角魔族</sorttitle>
+  <premiered>2019-01-15</premiered>
+  <releasedate>2019-01-15</releasedate>
+  <studio>J.C.STAFF</studio>
+  <season>-1</season>
+  <episode>-1</episode>
+  <displayorder>aired</displayorder>
+  <status>Ended</status>
+  <showtitle>街角魔族</showtitle>
+  <ratings>
+        <rating name="bangumi" max="10" default="true">
+            <value>8.200000</value>
+            <votes>105359</votes>
+        </rating>
+    </ratings>
+  <displayseason>-1</displayseason>
+  <displayepisode>-1</displayepisode>
+  <thumb spoof="" cache="" aspect="poster" preview="https://lain.bgm.tv/pic/cover/c/af/22/272510_T11Iw.jpg">https://lain.bgm.tv/pic/cover/c/af/22/272510_T11Iw.jpg</thumb>
+  <code></code>
+  <aired></aired>
+  <namedseason number="1">Season 1</namedseason>
+</tvshow>

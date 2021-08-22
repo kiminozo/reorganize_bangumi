@@ -1,0 +1,606 @@
+{
+ "id": 272510,
+ "url": "http://bgm.tv/subject/272510",
+ "type": 2,
+ "name": "まちカドまぞく",
+ "name_cn": "街角魔族",
+ "summary": "某日突然觉醒暗之力的女子高中生 吉田优子，为着解除施加在暗之一族身上的诅咒，为打倒魔法少女不懈努力。竟对曾经的救命恩人下手？！\r\n但是却完全没有胜算！\r\n废柴贫穷魔族与沉稳肌肉魔法少女之间的日常魔法喜剧，就此开幕！",
+ "eps": 12,
+ "eps_count": 12,
+ "air_date": "2019-07-11",
+ "air_weekday": 4,
+ "rating": {
+  "total": 2629,
+  "count": {
+   "1": 2,
+   "2": 1,
+   "3": 4,
+   "4": 18,
+   "5": 78,
+   "6": 343,
+   "7": 1072,
+   "8": 903,
+   "9": 146,
+   "10": 62
+  },
+  "score": 7.3
+ },
+ "rank": 1311,
+ "images": {
+  "large": "http://lain.bgm.tv/pic/cover/l/af/22/272510_T11Iw.jpg",
+  "common": "http://lain.bgm.tv/pic/cover/c/af/22/272510_T11Iw.jpg",
+  "medium": "http://lain.bgm.tv/pic/cover/m/af/22/272510_T11Iw.jpg",
+  "small": "http://lain.bgm.tv/pic/cover/s/af/22/272510_T11Iw.jpg",
+  "grid": "http://lain.bgm.tv/pic/cover/g/af/22/272510_T11Iw.jpg"
+ },
+ "collection": {
+  "wish": 405,
+  "collect": 3284,
+  "doing": 624,
+  "on_hold": 187,
+  "dropped": 169
+ },
+ "crt": [
+  {
+   "id": 70609,
+   "url": "http://bgm.tv/character/70609",
+   "name": "吉田優子",
+   "name_cn": "吉田优子",
+   "role_name": "主角",
+   "images": {
+    "large": "http://lain.bgm.tv/pic/crt/l/48/cf/70609_crt_XhpLz.jpg?r=1566723140",
+    "medium": "http://lain.bgm.tv/pic/crt/m/48/cf/70609_crt_XhpLz.jpg?r=1566723140",
+    "small": "http://lain.bgm.tv/pic/crt/s/48/cf/70609_crt_XhpLz.jpg?r=1566723140",
+    "grid": "http://lain.bgm.tv/pic/crt/g/48/cf/70609_crt_XhpLz.jpg?r=1566723140"
+   },
+   "comment": 52,
+   "collects": 134,
+   "info": {
+    "name_cn": "吉田优子",
+    "alias": {
+     "kana": "よしだ ゆうこ",
+     "romaji": "Yoshida Yuko",
+     "nick": "シャミ子",
+     "中文nick": "夏美子",
+     "魔族活动名": "シャドウミストレス優子",
+     "魔族活动名英文": "Shadow Mistress Yuko"
+    },
+    "gender": "女",
+    "birth": "9月28日",
+    "bloodtype": "O型",
+    "source": "日文Wikipedia",
+    "年龄": "15岁"
+   },
+   "actors": [
+    {
+     "id": 27194,
+     "url": "http://bgm.tv/person/27194",
+     "name": "小原好美",
+     "images": {
+      "large": "http://lain.bgm.tv/pic/crt/l/b7/e5/27194_prsn_9LhLi.jpg?r=1571902320",
+      "medium": "http://lain.bgm.tv/pic/crt/m/b7/e5/27194_prsn_9LhLi.jpg?r=1571902320",
+      "small": "http://lain.bgm.tv/pic/crt/s/b7/e5/27194_prsn_9LhLi.jpg?r=1571902320",
+      "grid": "http://lain.bgm.tv/pic/crt/g/b7/e5/27194_prsn_9LhLi.jpg?r=1571902320"
+     }
+    }
+   ]
+  },
+  {
+   "id": 70610,
+   "url": "http://bgm.tv/character/70610",
+   "name": "千代田桃",
+   "name_cn": "千代田桃",
+   "role_name": "主角",
+   "images": {
+    "large": "http://lain.bgm.tv/pic/crt/l/01/ab/70610_crt_89c80.jpg?r=1566723200",
+    "medium": "http://lain.bgm.tv/pic/crt/m/01/ab/70610_crt_89c80.jpg?r=1566723200",
+    "small": "http://lain.bgm.tv/pic/crt/s/01/ab/70610_crt_89c80.jpg?r=1566723200",
+    "grid": "http://lain.bgm.tv/pic/crt/g/01/ab/70610_crt_89c80.jpg?r=1566723200"
+   },
+   "comment": 27,
+   "collects": 101,
+   "info": {
+    "name_cn": "千代田桃",
+    "alias": {
+     "jp": "千代田 桃",
+     "kana": "ちよだ もも",
+     "romaji": "Chiyoda Momo",
+     "nick": "ちよもも"
+    },
+    "gender": "女",
+    "birth": "3月25日",
+    "bloodtype": "A型",
+    "height": "165cm",
+    "source": "Wikipedia",
+    "年龄": "15岁"
+   },
+   "actors": [
+    {
+     "id": 19339,
+     "url": "http://bgm.tv/person/19339",
+     "name": "鬼頭明里",
+     "images": {
+      "large": "http://lain.bgm.tv/pic/crt/l/a1/78/19339_prsn_1OHSO.jpg?r=1602137468",
+      "medium": "http://lain.bgm.tv/pic/crt/m/a1/78/19339_prsn_1OHSO.jpg?r=1602137468",
+      "small": "http://lain.bgm.tv/pic/crt/s/a1/78/19339_prsn_1OHSO.jpg?r=1602137468",
+      "grid": "http://lain.bgm.tv/pic/crt/g/a1/78/19339_prsn_1OHSO.jpg?r=1602137468"
+     }
+    }
+   ]
+  },
+  {
+   "id": 70611,
+   "url": "http://bgm.tv/character/70611",
+   "name": "リリス",
+   "name_cn": "莉莉丝",
+   "role_name": "主角",
+   "images": {
+    "large": "http://lain.bgm.tv/pic/crt/l/33/4d/70611_crt_lt3u4.jpg?r=1566723246",
+    "medium": "http://lain.bgm.tv/pic/crt/m/33/4d/70611_crt_lt3u4.jpg?r=1566723246",
+    "small": "http://lain.bgm.tv/pic/crt/s/33/4d/70611_crt_lt3u4.jpg?r=1566723246",
+    "grid": "http://lain.bgm.tv/pic/crt/g/33/4d/70611_crt_lt3u4.jpg?r=1566723246"
+   },
+   "comment": 8,
+   "collects": 20,
+   "info": {
+    "name_cn": "莉莉丝",
+    "alias": {
+     "en": "Lilith",
+     "nick": "ごせんぞ様",
+     "中文nick": "先祖大人"
+    },
+    "gender": "女",
+    "source": "Wikipedia",
+    "年龄": "4000-5000岁"
+   },
+   "actors": [
+    {
+     "id": 10757,
+     "url": "http://bgm.tv/person/10757",
+     "name": "髙橋ミナミ",
+     "images": {
+      "large": "http://lain.bgm.tv/pic/crt/l/e5/5f/10757_prsn_blW8L.jpg?r=1558165979",
+      "medium": "http://lain.bgm.tv/pic/crt/m/e5/5f/10757_prsn_blW8L.jpg?r=1558165979",
+      "small": "http://lain.bgm.tv/pic/crt/s/e5/5f/10757_prsn_blW8L.jpg?r=1558165979",
+      "grid": "http://lain.bgm.tv/pic/crt/g/e5/5f/10757_prsn_blW8L.jpg?r=1558165979"
+     }
+    }
+   ]
+  },
+  {
+   "id": 70612,
+   "url": "http://bgm.tv/character/70612",
+   "name": "陽夏木ミカン",
+   "name_cn": "阳夏木蜜柑",
+   "role_name": "主角",
+   "images": {
+    "large": "http://lain.bgm.tv/pic/crt/l/fd/63/70612_crt_hB8Ld.jpg?r=1566723330",
+    "medium": "http://lain.bgm.tv/pic/crt/m/fd/63/70612_crt_hB8Ld.jpg?r=1566723330",
+    "small": "http://lain.bgm.tv/pic/crt/s/fd/63/70612_crt_hB8Ld.jpg?r=1566723330",
+    "grid": "http://lain.bgm.tv/pic/crt/g/fd/63/70612_crt_hB8Ld.jpg?r=1566723330"
+   },
+   "comment": 6,
+   "collects": 32,
+   "info": {
+    "name_cn": "阳夏木蜜柑",
+    "alias": {
+     "jp": "陽夏木 ミカン",
+     "kana": "ひなつき ミカン",
+     "romaji": "Hinatsuki Mikan"
+    },
+    "gender": "女",
+    "birth": "11月3日",
+    "bloodtype": "O型",
+    "source": "Wikipedia"
+   },
+   "actors": [
+    {
+     "id": 25978,
+     "url": "http://bgm.tv/person/25978",
+     "name": "高柳知葉",
+     "images": {
+      "large": "http://lain.bgm.tv/pic/crt/l/32/80/25978_prsn_ampP1.jpg?r=1480180916",
+      "medium": "http://lain.bgm.tv/pic/crt/m/32/80/25978_prsn_ampP1.jpg?r=1480180916",
+      "small": "http://lain.bgm.tv/pic/crt/s/32/80/25978_prsn_ampP1.jpg?r=1480180916",
+      "grid": "http://lain.bgm.tv/pic/crt/g/32/80/25978_prsn_ampP1.jpg?r=1480180916"
+     }
+    }
+   ]
+  },
+  {
+   "id": 70833,
+   "url": "http://bgm.tv/character/70833",
+   "name": "佐田杏里",
+   "name_cn": "佐田杏里",
+   "role_name": "配角",
+   "images": {
+    "large": "http://lain.bgm.tv/pic/crt/l/e6/5e/70833_crt_wo3UN.jpg?r=1565692452",
+    "medium": "http://lain.bgm.tv/pic/crt/m/e6/5e/70833_crt_wo3UN.jpg?r=1565692452",
+    "small": "http://lain.bgm.tv/pic/crt/s/e6/5e/70833_crt_wo3UN.jpg?r=1565692452",
+    "grid": "http://lain.bgm.tv/pic/crt/g/e6/5e/70833_crt_wo3UN.jpg?r=1565692452"
+   },
+   "comment": 2,
+   "collects": 5,
+   "info": {
+    "name_cn": "佐田杏里",
+    "alias": {
+     "kana": "さた あんり",
+     "romaji": "Sata Anri"
+    },
+    "gender": "女",
+    "birth": "5月1日",
+    "bloodtype": "O型",
+    "source": "http://www.tbs.co.jp/anime/machikado/character/chara05.html"
+   },
+   "actors": [
+    {
+     "id": 10838,
+     "url": "http://bgm.tv/person/10838",
+     "name": "千本木彩花",
+     "images": {
+      "large": "http://lain.bgm.tv/pic/crt/l/56/7f/10838_prsn_4y14x.jpg?r=1543596658",
+      "medium": "http://lain.bgm.tv/pic/crt/m/56/7f/10838_prsn_4y14x.jpg?r=1543596658",
+      "small": "http://lain.bgm.tv/pic/crt/s/56/7f/10838_prsn_4y14x.jpg?r=1543596658",
+      "grid": "http://lain.bgm.tv/pic/crt/g/56/7f/10838_prsn_4y14x.jpg?r=1543596658"
+     }
+    }
+   ]
+  },
+  {
+   "id": 70834,
+   "url": "http://bgm.tv/character/70834",
+   "name": "小倉しおん",
+   "name_cn": "小仓紫苑",
+   "role_name": "配角",
+   "images": {
+    "large": "http://lain.bgm.tv/pic/crt/l/eb/c0/70834_crt_3VXR1.jpg?r=1564990923",
+    "medium": "http://lain.bgm.tv/pic/crt/m/eb/c0/70834_crt_3VXR1.jpg?r=1564990923",
+    "small": "http://lain.bgm.tv/pic/crt/s/eb/c0/70834_crt_3VXR1.jpg?r=1564990923",
+    "grid": "http://lain.bgm.tv/pic/crt/g/eb/c0/70834_crt_3VXR1.jpg?r=1564990923"
+   },
+   "comment": 2,
+   "collects": 5,
+   "info": {
+    "name_cn": "小仓紫苑",
+    "alias": {
+     "0": "小仓诗音",
+     "zh": "小仓志温",
+     "kana": "おぐら しおん",
+     "romaji": "Ogura Sion"
+    },
+    "gender": "女",
+    "birth": "12月14日",
+    "bloodtype": "A型",
+    "source": "http://www.tbs.co.jp/anime/machikado/character/chara06.html"
+   },
+   "actors": [
+    {
+     "id": 11247,
+     "url": "http://bgm.tv/person/11247",
+     "name": "諏訪彩花",
+     "images": {
+      "large": "http://lain.bgm.tv/pic/crt/l/58/6d/11247_prsn_iJ4Hh.jpg?r=1446946933",
+      "medium": "http://lain.bgm.tv/pic/crt/m/58/6d/11247_prsn_iJ4Hh.jpg?r=1446946933",
+      "small": "http://lain.bgm.tv/pic/crt/s/58/6d/11247_prsn_iJ4Hh.jpg?r=1446946933",
+      "grid": "http://lain.bgm.tv/pic/crt/g/58/6d/11247_prsn_iJ4Hh.jpg?r=1446946933"
+     }
+    }
+   ]
+  },
+  {
+   "id": 70835,
+   "url": "http://bgm.tv/character/70835",
+   "name": "吉田良子",
+   "name_cn": "吉田良子",
+   "role_name": "配角",
+   "images": {
+    "large": "http://lain.bgm.tv/pic/crt/l/35/81/70835_crt_Te3zz.jpg?r=1564990880",
+    "medium": "http://lain.bgm.tv/pic/crt/m/35/81/70835_crt_Te3zz.jpg?r=1564990880",
+    "small": "http://lain.bgm.tv/pic/crt/s/35/81/70835_crt_Te3zz.jpg?r=1564990880",
+    "grid": "http://lain.bgm.tv/pic/crt/g/35/81/70835_crt_Te3zz.jpg?r=1564990880"
+   },
+   "comment": 4,
+   "collects": 21,
+   "info": {
+    "name_cn": "吉田良子",
+    "alias": {
+     "kana": "よしだ りょうこ",
+     "romaji": "Yoshida Ryouko"
+    },
+    "gender": "女",
+    "birth": "1月7日",
+    "bloodtype": "A型",
+    "source": "http://www.tbs.co.jp/anime/machikado/character/chara07.html"
+   },
+   "actors": [
+    {
+     "id": 15988,
+     "url": "http://bgm.tv/person/15988",
+     "name": "大和田仁美",
+     "images": {
+      "large": "http://lain.bgm.tv/pic/crt/l/06/35/15988_prsn_Ca3d6.jpg?r=1517759361",
+      "medium": "http://lain.bgm.tv/pic/crt/m/06/35/15988_prsn_Ca3d6.jpg?r=1517759361",
+      "small": "http://lain.bgm.tv/pic/crt/s/06/35/15988_prsn_Ca3d6.jpg?r=1517759361",
+      "grid": "http://lain.bgm.tv/pic/crt/g/06/35/15988_prsn_Ca3d6.jpg?r=1517759361"
+     }
+    }
+   ]
+  },
+  {
+   "id": 70836,
+   "url": "http://bgm.tv/character/70836",
+   "name": "吉田清子",
+   "name_cn": "吉田清子",
+   "role_name": "配角",
+   "images": {
+    "large": "http://lain.bgm.tv/pic/crt/l/cb/dc/70836_crt_1Oh08.jpg?r=1563605503",
+    "medium": "http://lain.bgm.tv/pic/crt/m/cb/dc/70836_crt_1Oh08.jpg?r=1563605503",
+    "small": "http://lain.bgm.tv/pic/crt/s/cb/dc/70836_crt_1Oh08.jpg?r=1563605503",
+    "grid": "http://lain.bgm.tv/pic/crt/g/cb/dc/70836_crt_1Oh08.jpg?r=1563605503"
+   },
+   "comment": 7,
+   "collects": 11,
+   "info": {
+    "name_cn": "吉田清子",
+    "alias": {
+     "kana": "よしだ せいこ",
+     "romaji": "Yoshida Seiko"
+    },
+    "gender": "女",
+    "source": "http://www.tbs.co.jp/anime/machikado/character/chara08.html"
+   },
+   "actors": [
+    {
+     "id": 3890,
+     "url": "http://bgm.tv/person/3890",
+     "name": "大原さやか",
+     "images": {
+      "large": "http://lain.bgm.tv/pic/crt/l/cf/63/3890_prsn_Luylq.jpg?r=1595875512",
+      "medium": "http://lain.bgm.tv/pic/crt/m/cf/63/3890_prsn_Luylq.jpg?r=1595875512",
+      "small": "http://lain.bgm.tv/pic/crt/s/cf/63/3890_prsn_Luylq.jpg?r=1595875512",
+      "grid": "http://lain.bgm.tv/pic/crt/g/cf/63/3890_prsn_Luylq.jpg?r=1595875512"
+     }
+    }
+   ]
+  },
+  {
+   "id": 71450,
+   "url": "http://bgm.tv/character/71450",
+   "name": "メタ子",
+   "name_cn": "梅塔子",
+   "role_name": "配角",
+   "images": {
+    "large": "http://lain.bgm.tv/pic/crt/l/43/55/71450_crt_8MEc8.jpg",
+    "medium": "http://lain.bgm.tv/pic/crt/m/43/55/71450_crt_8MEc8.jpg",
+    "small": "http://lain.bgm.tv/pic/crt/s/43/55/71450_crt_8MEc8.jpg",
+    "grid": "http://lain.bgm.tv/pic/crt/g/43/55/71450_crt_8MEc8.jpg"
+   },
+   "comment": 10,
+   "collects": 2,
+   "info": {
+    "name_cn": "梅塔子",
+    "alias": {
+     "zh": "领航员梅塔子",
+     "jp": "メタトロン"
+    },
+    "gender": "已去势"
+   },
+   "actors": [
+    {
+     "id": 4722,
+     "url": "http://bgm.tv/person/4722",
+     "name": "仲野裕",
+     "images": {
+      "large": "http://lain.bgm.tv/pic/crt/l/f1/b0/4722_seiyu_anidb.jpg",
+      "medium": "http://lain.bgm.tv/pic/crt/m/f1/b0/4722_seiyu_anidb.jpg",
+      "small": "http://lain.bgm.tv/pic/crt/s/f1/b0/4722_seiyu_anidb.jpg",
+      "grid": "http://lain.bgm.tv/pic/crt/g/f1/b0/4722_seiyu_anidb.jpg"
+     }
+    },
+    {
+     "id": 20604,
+     "url": "http://bgm.tv/person/20604",
+     "name": "七瀬彩夏",
+     "images": {
+      "large": "http://lain.bgm.tv/pic/crt/l/0f/c0/20604_prsn_O4cmD.jpg?r=1481086858",
+      "medium": "http://lain.bgm.tv/pic/crt/m/0f/c0/20604_prsn_O4cmD.jpg?r=1481086858",
+      "small": "http://lain.bgm.tv/pic/crt/s/0f/c0/20604_prsn_O4cmD.jpg?r=1481086858",
+      "grid": "http://lain.bgm.tv/pic/crt/g/0f/c0/20604_prsn_O4cmD.jpg?r=1481086858"
+     }
+    }
+   ]
+  }
+ ],
+ "staff": [
+  {
+   "id": 26466,
+   "url": "http://bgm.tv/person/26466",
+   "name": "伊藤いづも",
+   "name_cn": "伊藤出云",
+   "role_name": "",
+   "images": {
+    "large": "http://lain.bgm.tv/pic/crt/l/6d/86/26466_prsn_c0JSR.jpg",
+    "medium": "http://lain.bgm.tv/pic/crt/m/6d/86/26466_prsn_c0JSR.jpg",
+    "small": "http://lain.bgm.tv/pic/crt/s/6d/86/26466_prsn_c0JSR.jpg",
+    "grid": "http://lain.bgm.tv/pic/crt/g/6d/86/26466_prsn_c0JSR.jpg"
+   },
+   "comment": 5,
+   "collects": 0,
+   "info": {
+    "name_cn": "伊藤出云",
+    "alias": {
+     "0": "影井きゃらこ",
+     "zh": "影井Caraco",
+     "jp": "伊藤 いづも",
+     "kana": "いとう いづも",
+     "romaji": "Itou Izumo"
+    },
+    "gender": "女",
+    "主页": "http://zumogedo.sakura.ne.jp/",
+    "Twitter": "@izumo_ito",
+    "来源": "https://media.comicspace.jp/archives/12126"
+   },
+   "jobs": [
+    "原作"
+   ]
+  },
+  {
+   "id": 28,
+   "url": "http://bgm.tv/person/28",
+   "name": "桜井弘明",
+   "name_cn": "樱井弘明",
+   "role_name": "",
+   "images": {
+    "large": "http://lain.bgm.tv/pic/crt/l/41/c7/28_prsn_0GyWJ.jpg?r=1573784184",
+    "medium": "http://lain.bgm.tv/pic/crt/m/41/c7/28_prsn_0GyWJ.jpg?r=1573784184",
+    "small": "http://lain.bgm.tv/pic/crt/s/41/c7/28_prsn_0GyWJ.jpg?r=1573784184",
+    "grid": "http://lain.bgm.tv/pic/crt/g/41/c7/28_prsn_0GyWJ.jpg?r=1573784184"
+   },
+   "comment": 28,
+   "collects": 0,
+   "info": {
+    "name_cn": "樱井弘明",
+    "alias": {
+     "jp": "桜井弘明",
+     "kana": "さくらい ひろあき",
+     "romaji": "Sakurai Hiroaki"
+    },
+    "gender": "男",
+    "birth": "1958-12-15",
+    "妻子": "大場小ゆり"
+   },
+   "jobs": [
+    "导演",
+    "分镜"
+   ]
+  },
+  {
+   "id": 35391,
+   "url": "http://bgm.tv/person/35391",
+   "name": "八木崇夫",
+   "name_cn": "八木崇夫",
+   "role_name": "",
+   "images": null,
+   "comment": 0,
+   "collects": 0,
+   "info": {
+    "name_cn": "八木崇夫"
+   },
+   "jobs": [
+    "脚本"
+   ]
+  },
+  {
+   "id": 14197,
+   "url": "http://bgm.tv/person/14197",
+   "name": "大場小ゆり",
+   "name_cn": "大场小百合",
+   "role_name": "",
+   "images": null,
+   "comment": 2,
+   "collects": 0,
+   "info": {
+    "name_cn": "大场小百合",
+    "alias": {
+     "kana": "おおば さゆり",
+     "romaji": "Ooba Sayuri"
+    },
+    "gender": "女",
+    "丈夫": "桜井弘明"
+   },
+   "jobs": [
+    "脚本"
+   ]
+  },
+  {
+   "id": 13270,
+   "url": "http://bgm.tv/person/13270",
+   "name": "大知慶一郎",
+   "name_cn": "大知庆一郎",
+   "role_name": "",
+   "images": null,
+   "comment": 10,
+   "collects": 0,
+   "info": {
+    "name_cn": "大知庆一郎"
+   },
+   "jobs": [
+    "脚本"
+   ]
+  },
+  {
+   "id": 548,
+   "url": "http://bgm.tv/person/548",
+   "name": "佐藤竜雄",
+   "name_cn": "佐藤龙雄",
+   "role_name": "",
+   "images": {
+    "large": "http://lain.bgm.tv/pic/crt/l/8d/34/548_prsn_anidb.jpg",
+    "medium": "http://lain.bgm.tv/pic/crt/m/8d/34/548_prsn_anidb.jpg",
+    "small": "http://lain.bgm.tv/pic/crt/s/8d/34/548_prsn_anidb.jpg",
+    "grid": "http://lain.bgm.tv/pic/crt/g/8d/34/548_prsn_anidb.jpg"
+   },
+   "comment": 11,
+   "collects": 0,
+   "info": {
+    "name_cn": "佐藤龙雄",
+    "alias": {
+     "kana": "さとう たつお",
+     "romaji": "Satou Tatsuo"
+    },
+    "gender": "男",
+    "birth": "1964-07-07",
+    "twitter": "@seitenhyohyo ‏"
+   },
+   "jobs": [
+    "分镜"
+   ]
+  },
+  {
+   "id": 3317,
+   "url": "http://bgm.tv/person/3317",
+   "name": "岡本英樹",
+   "name_cn": "冈本英树",
+   "role_name": "",
+   "images": null,
+   "comment": 1,
+   "collects": 0,
+   "info": {
+    "name_cn": "冈本英树",
+    "alias": {
+     "0": "瀬田用賀",
+     "zh": "濑田用贺",
+     "kana": "おかもと ひでき",
+     "romaji": "Okamoto Hideki"
+    },
+    "gender": "男"
+   },
+   "jobs": [
+    "分镜"
+   ]
+  },
+  {
+   "id": 136,
+   "url": "http://bgm.tv/person/136",
+   "name": "鈴木行",
+   "name_cn": "铃木行",
+   "role_name": "",
+   "images": null,
+   "comment": 2,
+   "collects": 0,
+   "info": {
+    "name_cn": "铃木行",
+    "alias": {
+     "jp": "鈴木肇",
+     "kana": "すずき いく",
+     "romaji": "Suzuki Iku"
+    },
+    "gender": "男",
+    "birth": "10-04"
+   },
+   "jobs": [
+    "分镜"
+   ]
+  }
+ ]
+}
