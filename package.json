@@ -14,8 +14,7 @@
     "test:worker": "./node_modules/.bin/ts-node -- ./src/worker.ts",
     "test:bgm": "./node_modules/.bin/ts-node -- ./src/bgm.ts",
     "test:kitsu": "./node_modules/.bin/ts-node -- ./src/kitsu.ts",
-    "test:nfo": "./node_modules/.bin/ts-node -- ./src/nfo.ts",
-
+    "test:nfo": "./node_modules/.bin/ts-node -- ./src/nfoConveter.ts",
     "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts"
   },
   "dependencies": {

@@ -1,18 +1,45 @@
-import { Builder } from 'xml2js';
 
-interface TvNfo {
-    tvshow: {
-        title: string
-        originaltitle: string
-        showtitle: string
-    }
+
+
+
+export interface TvshowInfo {
+    tvshow: Tvshow;
+}
+
+export interface Tvshow {
+    title: string;
+    originaltitle: string;
+    sorttitle?: string;
+    plot?: string;
+    outline?: string;
+    lockdata?: string;
+    lockedfields?: string;
+    dateadded?: string;
+    rating?: string;
+    year?: string;
+    premiered?: string;
+    releasedate?: string;
+    //studio?:         string;
+    season?: string;
+    episode?: string;
+    displayorder?: string;
+    status: string;
+    showtitle?: string;
+    displayseason?: string;
+    displayepisode?: string;
+    // thumb:          Thumb;
+    // code:           Aired;
+    // aired:          Aired;
+    // namedseason:    Namedseason;
 }
 
 
 
 //var obj = { root: { $: { id: "my id" }, _: "my inner text" } };
 
-var builder = new Builder();
-var s: TvNfo = { tvshow: { title: "魔族", originaltitle: "originaltitle", showtitle: "showtitle" } }
-var xml = builder.buildObject(s);
-console.log(xml)
+//var builder = new Builder();
+//var s: TvNfo = { tvshow: { title: "魔族", originaltitle: "originaltitle", showtitle: "showtitle" } }
+//var xml = builder.buildObject(s);
+//console.log(xml)
+
+//export function 
