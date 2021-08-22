@@ -36,7 +36,6 @@ async function search(line: string): Promise<string> {
     let keyword = extract(line);
     console.log(colors.yellow(keyword));
     //await tvInfo(keyword);
-    return null;
     let item = await bgm.searchApi(keyword);
     if (item === null) {
         let jpName = await kitsu.searchApi(keyword);
@@ -94,7 +93,7 @@ async function md() {
 }
 
 
-const str = "[Airota&Nekomoe kissaten][Adachi to Shimamura][01-12END][1080p][CHS]";
+//const str = "[Airota&Nekomoe kissaten][Adachi to Shimamura][01-12END][1080p][CHS]";
 
 // async function test2() {
 //     await getTokenizer();
@@ -117,5 +116,6 @@ const str = "[Airota&Nekomoe kissaten][Adachi to Shimamura][01-12END][1080p][CHS
 //search("[Sakurato]One Room Third Season [01-12 Fin][TVRip][1080p][CHS]");
 //tvInfo("アイドルマスター シンデレラガールズ劇場");
 //search("[KTXP][Gochuumon_wa_Usagi_Desu_ka_S3][01-12][GB][720p]")
-md();
+//md();
 
+search("街角魔族")
