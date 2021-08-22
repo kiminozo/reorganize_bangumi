@@ -3,7 +3,10 @@ import Path = require('path')
 import { Item, title } from "./bgm"
 import { Tvshow, TvshowInfo } from "./nfo"
 import { Builder } from 'xml2js'
+import { findBestMatch } from "string-similarity";
 const builder = new Builder()
+
+const videoExts: Set<string> = new Set([".mp4", ".mkv", ".rmvb"])
 
 async function testRead(): Promise<Item> {
     const jsonItem = await fs.promises.readFile(Path.join("tests", "data.json"), 'utf-8')
@@ -13,16 +16,28 @@ async function testRead(): Promise<Item> {
 
 async function findNames(path: string, epCount: number): Promise<string[]> {
     const files = await fs.promises.readdir("tests")
-    const nameList = []
-    for await (const name of files) {
-        if ((await fs.promises.stat(name)).isDirectory) {
+    //console.log(files)
+    const nameList: string[] = []
+    for (const name of files) {
+        const ext = Path.extname(name)
+        // if (!videoExts.has(ext)) {
+        //     continue
+        // }
+        if ((await fs.promises.stat(Path.join(path, name))).isDirectory()) {
             continue
         }
+
         nameList.push(name)
     }
-    nameList.filter(p => {
+    const sortNameList = nameList.sort((a, b) => b.length - a.length)
+    const mainName = sortNameList[epCount / 2]
+    console.log(mainName)
+    const match = findBestMatch(mainName, nameList)
+    const result = match.ratings.filter(p => p.rating > 0.9)
+    // .flatMap(p => p.rating)
+    console.log(result)
+    return nameList
 
-    })
 }
 
 function conveter(item: Item) {
@@ -76,7 +91,7 @@ async function test() {
 
 async function test2() {
     const names = await findNames("tests", 12)
-    console.log(names)
+    // console.log(names)
 }
 
 test2()
