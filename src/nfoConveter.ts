@@ -146,7 +146,7 @@ function conveterEp(ep: EpItem) {
         episodedetails: {
             title: title,
             sorttitle: ep.name,
-            season: '',
+            season: '1',
             episode: ep.sort.toString()
         }
     }
