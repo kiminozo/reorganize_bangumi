@@ -144,8 +144,10 @@ function conveterEp(ep: EpItem) {
 
     const epInfo: EpisodeDetailsInfo = {
         episodedetails: {
-            title: `${ep.sort}.${title}`,
-            sorttitle: `${ep.sort}.${ep.name}`
+            title: title,
+            sorttitle: ep.name,
+            season: '',
+            episode: ep.sort.toString()
         }
     }
     return epInfo;
@@ -183,10 +185,16 @@ export async function makeNfo(path: string) {
         if (!ep) {
             continue
         }
+        //  const nameInfo = Path.parse(name.name)
+        // const epName = `.S01E${name.ep.toString().padStart(2, "0")}`
+        // const newName = nameInfo.name + epName + nameInfo.ext
+        // await fs.promises.rename(Path.join(path, name.name), Path.join(path, newName))
         const epNfo = conveterEp(ep)
         await saveEpNfo(epNfo, path, name.name)
     }
 }
+
+
 
 
 

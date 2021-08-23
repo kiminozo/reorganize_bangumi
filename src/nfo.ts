@@ -40,6 +40,8 @@ export interface Tvshow {
 export interface EpisodeDetails {
     title: string;
     sorttitle: string;
+    season: string;
+    episode: string;
 }
 
 
