@@ -1,17 +1,28 @@
 import * as fs from "fs"
 import Path = require('path')
-import { Item, title } from "./bgm"
-import { Tvshow, TvshowInfo } from "./nfo"
+import { EpItem, Item, title } from "./bgm"
+import { EpisodeDetailsInfo, Tvshow, TvshowInfo } from "./nfo"
 import { Builder } from 'xml2js'
 import { findBestMatch } from "string-similarity";
 const builder = new Builder()
 
 const videoExts: Set<string> = new Set([".mp4", ".mkv", ".rmvb"])
+const dataFileName = "data.json";
 
 async function testRead(): Promise<Item> {
-    const jsonItem = await fs.promises.readFile(Path.join("tests", "data.json"), 'utf-8')
-    const item: Item = JSON.parse(jsonItem)
-    return item
+    return readData("tests")
+}
+
+async function readData(path: string): Promise<Item | null> {
+    try {
+        const data = await fs.promises.readFile(Path.join(path, dataFileName), 'utf-8');
+        const item: Item = JSON.parse(data);
+        return item;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+
 }
 
 interface EpName {
@@ -20,14 +31,17 @@ interface EpName {
 }
 
 async function findNames(path: string, epCount: number): Promise<EpName[]> {
-    const files = await fs.promises.readdir("tests")
-    //console.log(files)
+    const files = await fs.promises.readdir(path)
+
     const nameList: string[] = []
     for (const name of files) {
+        if (name.startsWith(".")) {
+            continue
+        }
         const ext = Path.extname(name)
-        // if (!videoExts.has(ext)) {
-        //     continue
-        // }
+        if (!videoExts.has(ext)) {
+            continue
+        }
         if ((await fs.promises.stat(Path.join(path, name))).isDirectory()) {
             continue
         }
@@ -35,13 +49,14 @@ async function findNames(path: string, epCount: number): Promise<EpName[]> {
         nameList.push(name)
     }
     const sortNameList = nameList.sort((a, b) => b.length - a.length)
-    const mainName = sortNameList[epCount / 2]
+    // console.log(nameList)
+    const mainName = sortNameList[Math.floor(epCount / 2)]
     // console.log(mainName)
     const match = findBestMatch(mainName, nameList)
     const names = match.ratings.filter(p => p.rating > 0.9)
         .flatMap(p => p.target)
-    // console.log(names)
-    const keys = numIndex(mainName);
+    //console.log(names)
+    // const keys = numIndex(mainName);
     //console.log(keys)
     const info = numIndex(mainName).find(d => {
         const tmp = names.map(n => n.substring(0, d.index))
@@ -54,7 +69,6 @@ async function findNames(path: string, epCount: number): Promise<EpName[]> {
     const epNames = names.flatMap(n => { return { ep: epNum(n, info.index), name: n } })
         .sort((a, b) => a.ep - b.ep)
     return epNames
-
 }
 
 interface NumIndexData {
@@ -74,7 +88,7 @@ function numIndex(name: string): NumIndexData[] {
             result.push({ key: m[0], index: m.index })
         }
     } while (m);
-    return result;
+    return result.reverse();
 }
 
 function epNum(name: string, index: number): number {
@@ -125,9 +139,21 @@ function conveter(item: Item) {
     return nfo
 }
 
+function conveterEp(ep: EpItem) {
+    const title = (ep.name_cn != null ? ep.name_cn : ep.name)
+
+    const epInfo: EpisodeDetailsInfo = {
+        episodedetails: {
+            title: `${ep.sort}.${title}`,
+            sorttitle: `${ep.sort}.${ep.name}`
+        }
+    }
+    return epInfo;
+}
+
 async function saveNfo(nfo: TvshowInfo, path: string) {
     const xml = builder.buildObject(nfo);
-    console.log(xml)
+    //console.log(xml)
     try {
         await fs.promises.mkdir(Path.dirname(path), { recursive: true })
     } catch (error) {
@@ -136,6 +162,34 @@ async function saveNfo(nfo: TvshowInfo, path: string) {
     await fs.promises.writeFile(Path.join(path, "tvshow.nfo"), xml, "utf-8")
 }
 
+async function saveEpNfo(nfo: EpisodeDetailsInfo, path: string, name: string) {
+    const xml = builder.buildObject(nfo);
+    //console.log(xml)
+    await fs.promises.writeFile(Path.join(path, `${Path.parse(name).name}.nfo`), xml, "utf-8")
+}
+
+export async function makeNfo(path: string) {
+    const item = await readData(path)
+    const nfo = conveter(item)
+    //console.log(nfo)
+    await saveNfo(nfo, path)
+
+    const names = await findNames(path, item.eps_count)
+    console.log(names)
+    for (const name of names) {
+        const epItems = item.eps as EpItem[]
+        const ep = epItems.filter(ep => ep.type === 0)
+            .find(ep => ep.sort === name.ep)
+        if (!ep) {
+            continue
+        }
+        const epNfo = conveterEp(ep)
+        await saveEpNfo(epNfo, path, name.name)
+    }
+}
+
+
+
 async function test() {
     const item = await testRead()
     console.log(item)
@@ -143,15 +197,27 @@ async function test() {
     console.log(nfo)
     await saveNfo(nfo, "output")
 
+    const names = await findNames("tests", item.eps_count)
+
+    for (const name of names) {
+        const epItems = item.eps as EpItem[]
+        const ep = epItems.filter(ep => ep.type === 0)
+            .find(ep => ep.sort === name.ep)
+        if (!ep) {
+            continue
+        }
+        const epNfo = conveterEp(ep)
+        await saveEpNfo(epNfo, "output", name.name)
+    }
     // for (let i = 0; i < 12; i++) {
-    //     const path = Path.join("tests", `[Airota & Nekomoe kissaten][Machikado Mazoku][0${i}][720p][CHS].mp4`)
+    //     const path = Path.join("tests", `[Airota & Nekomoe kissaten][Machikado Mazoku][0${ i }][720p][CHS].mp4`)
     //     await fs.promises.writeFile(path, "", "utf-8")
     // }
 }
 
-async function test2() {
-    const names = await findNames("tests", 12)
-    console.log(names)
-}
+// async function test2() {
+//     const names = await findNames("tests", 12)
+//     console.log(names)
+// }
 
-test2()
+//test()

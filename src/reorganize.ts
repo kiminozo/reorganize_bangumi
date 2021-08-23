@@ -1,7 +1,9 @@
-import { Item, sort_out_path, quarter, title } from "./bgm";
+import { Item, sort_out_path, quarter, title, EpItem } from "./bgm";
 import { scan, move } from './files'
 import * as fs from "fs"
 import Path = require('path');
+import { infoApi } from "./bgm"
+import { makeNfo } from "./nfoConveter";
 const dataFileName = "data.json";
 
 const output = "output.log";
@@ -39,12 +41,46 @@ async function reorganizePath(root: string, path: string): Promise<void> {
     }
 }
 
+async function updateInfo(path: string): Promise<void> {
+    const item = await readData(path);
+    if (!item) {
+        return;
+    }
+    // const epItems = item.eps as EpItem[]
+    // if (epItems && epItems.length != 0) {
+    //     return;
+    // }
+    const newItem = await infoApi(item.id)
+    if (!newItem) {
+        return;
+    }
+    await fs.promises.writeFile(Path.join(path, "data.json"), JSON.stringify(newItem, null, 1));
+
+}
+
 
 async function reorganizeAll(root: string, deep: number) {
     const dirs = await scan(root, deep);
     await Promise.all(dirs.map(dir => reorganizePath(root, dir)));
 }
 
-reorganizeAll(Path.join("/Volumes/anime", "新番"), 1)
+async function updateInfoAll(root: string, deep: number) {
+    const dirs = await scan(root, deep);
+    console.log(dirs)
+    await Promise.all(dirs.map(dir => updateInfo(dir)));
+}
 
+async function updateNfoAll(root: string, deep: number) {
+    const dirs = await scan(root, deep);
+    for (const dir of dirs) {
+        console.log(dir)
+        await makeNfo(dir)
+    }
+    //await Promise.all(dirs.map(dir => makeNfo(dir)));
+}
+
+//reorganizeAll(Path.join("/Volumes/pt", "新番"), 1)
+//updateInfoAll(Path.join("/Volumes/pt", "新番"), 2)
 //console.log("fate/stay night".replace(/\//gi, " "));
+
+updateNfoAll(Path.join("/Volumes/pt", "新番", "2020s"), 1)

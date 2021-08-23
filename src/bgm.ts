@@ -203,7 +203,7 @@ export async function searchApi(word: string): Promise<Item> {
     return await searchApi(newWord);
 }
 
-async function infoApi(id: number): Promise<Item> {
+export async function infoApi(id: number): Promise<Item> {
     //let key = word.replace(/\s/gi, "+");
     let res = await axios.get<Item>("https://api.bgm.tv/subject/" + id + "?responseGroup=large", { timeout: 15000 });
     if (res.data) {

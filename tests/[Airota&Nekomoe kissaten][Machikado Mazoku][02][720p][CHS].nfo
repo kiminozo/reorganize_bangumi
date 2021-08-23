@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<episodedetails>
+  <plot />
+  <outline />
+  <lockdata>false</lockdata>
+  <lockedfields>Name</lockedfields>
+  <dateadded>2019-10-02 11:10:40</dateadded>
+  <title>2.スポ根ですが！？万物は流転する</title>
+  <runtime>25</runtime>
+  <fileinfo>
+    <streamdetails>
+      <video>
+        <codec>h264</codec>
+        <micodec>h264</micodec>
+        <bitrate>870240</bitrate>
+        <width>1280</width>
+        <height>720</height>
+        <aspect>16:9</aspect>
+        <aspectratio>16:9</aspectratio>
+        <framerate>23.976025</framerate>
+        <language>und</language>
+        <scantype>progressive</scantype>
+        <default>True</default>
+        <forced>False</forced>
+        <duration>24</duration>
+        <durationinseconds>1492</durationinseconds>
+      </video>
+      <audio>
+        <codec>aac</codec>
+        <micodec>aac</micodec>
+        <bitrate>128000</bitrate>
+        <language>jpn</language>
+        <scantype>progressive</scantype>
+        <channels>2</channels>
+        <samplingrate>44100</samplingrate>
+        <default>True</default>
+        <forced>False</forced>
+      </audio>
+    </streamdetails>
+  </fileinfo>
+</episodedetails>
