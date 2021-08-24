@@ -84,3 +84,5 @@ async function updateNfoAll(root: string, deep: number) {
 //console.log("fate/stay night".replace(/\//gi, " "));
 
 updateNfoAll(Path.join("/Volumes/pt", "新番", "2020s"), 1)
+
+//makeNfo(Path.join("/Volumes/pt", "新番", "2020s", "2021-04", "86 -不存在的战区-"))

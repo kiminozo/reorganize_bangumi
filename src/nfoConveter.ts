@@ -1,7 +1,7 @@
 import * as fs from "fs"
 import Path = require('path')
 import { EpItem, Item, title } from "./bgm"
-import { EpisodeDetailsInfo, Tvshow, TvshowInfo } from "./nfo"
+import { EpisodeDetailsInfo, SeasonInfo, Tvshow, TvshowInfo } from "./nfo"
 import { Builder } from 'xml2js'
 import { findBestMatch } from "string-similarity";
 const builder = new Builder()
@@ -139,14 +139,27 @@ function conveter(item: Item) {
     return nfo
 }
 
+function conveterSeason(item: Item) {
+    const title = (item.name_cn != null ? item.name_cn : item.name)
+
+    const seasonInfo: SeasonInfo = {
+        season: {
+            title: title,
+            sorttitle: item.name,
+            season: '1'
+        }
+    }
+    return seasonInfo;
+}
+
 function conveterEp(ep: EpItem) {
     const title = (ep.name_cn != null ? ep.name_cn : ep.name)
-
+    const season = (~~ep.sort == ep.sort) ? "1" : "0"
     const epInfo: EpisodeDetailsInfo = {
         episodedetails: {
             title: title,
             sorttitle: ep.name,
-            season: '1',
+            season: season,
             episode: ep.sort.toString()
         }
     }
@@ -164,6 +177,12 @@ async function saveNfo(nfo: TvshowInfo, path: string) {
     await fs.promises.writeFile(Path.join(path, "tvshow.nfo"), xml, "utf-8")
 }
 
+async function saveSeasonNfo(nfo: SeasonInfo, path: string) {
+    const xml = builder.buildObject(nfo);
+    //console.log(xml)
+    await fs.promises.writeFile(Path.join(path, `season.nfo`), xml, "utf-8")
+}
+
 async function saveEpNfo(nfo: EpisodeDetailsInfo, path: string, name: string) {
     const xml = builder.buildObject(nfo);
     //console.log(xml)
@@ -175,15 +194,21 @@ export async function makeNfo(path: string) {
     const nfo = conveter(item)
     //console.log(nfo)
     await saveNfo(nfo, path)
+    //const season = conveterSeason(item)
+    //await saveSeasonNfo(season, path)
 
     const names = await findNames(path, item.eps_count)
     console.log(names)
     for (const name of names) {
         const epItems = item.eps as EpItem[]
-        const ep = epItems.filter(ep => ep.type === 0)
+        let ep = epItems.filter(ep => ep.type === 0)
             .find(ep => ep.sort === name.ep)
         if (!ep) {
-            continue
+            ep = epItems.filter(ep => ep.type === 1)
+                .find(ep => ep.sort === name.ep)
+            if (!ep) {
+                continue
+            }
         }
         //  const nameInfo = Path.parse(name.name)
         // const epName = `.S01E${name.ep.toString().padStart(2, "0")}`

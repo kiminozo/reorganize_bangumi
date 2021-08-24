@@ -98,7 +98,7 @@ export interface Item {
 export interface EpItem {
     id: number
     url: string//"http://bgm.tv/ep/892649"
-    type: 0
+    type: number
     sort: number //1
     name: string//"優子の目覚め!! 家庭の事情で今日から魔族"
     name_cn: string// "优子的觉醒！！因为家庭原因今天开始成为魔族"

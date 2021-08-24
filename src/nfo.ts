@@ -9,6 +9,10 @@ export interface TvshowInfo {
 export interface EpisodeDetailsInfo {
     episodedetails: EpisodeDetails;
 }
+export interface SeasonInfo {
+    season: Season
+}
+
 
 export interface Tvshow {
     title: string;
@@ -43,6 +47,13 @@ export interface EpisodeDetails {
     season: string;
     episode: string;
 }
+
+export interface Season {
+    title: string;
+    sorttitle: string;
+    season: string;
+}
+
 
 
 //var obj = { root: { $: { id: "my id" }, _: "my inner text" } };
