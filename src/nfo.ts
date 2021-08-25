@@ -35,6 +35,7 @@ export interface Tvshow {
     showtitle?: string;
     displayseason?: string;
     displayepisode?: string;
+    id?: string;
     // thumb:          Thumb;
     // code:           Aired;
     // aired:          Aired;
@@ -46,6 +47,7 @@ export interface EpisodeDetails {
     sorttitle: string;
     season: string;
     episode: string;
+    id?: string;
 }
 
 export interface Season {

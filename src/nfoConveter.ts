@@ -30,6 +30,22 @@ interface EpName {
     ep: number
 }
 
+function findSample(list: string[]): string {
+    const map = new Map<number, string[]>();
+    list.forEach((item) => {
+        const key = item.length;
+        const collection = map.get(key);
+        if (!collection) {
+            map.set(key, [item]);
+        } else {
+            collection.push(item);
+        }
+    });
+    const values = [...map.values()]
+    const max = values.map(p => p.length).reduce((max, p) => max = Math.max(max, p), 0)
+    return values.find(p => p.length == max)[Math.floor(max / 2)];
+}
+
 async function findNames(path: string, epCount: number): Promise<EpName[]> {
     const files = await fs.promises.readdir(path)
 
@@ -48,17 +64,18 @@ async function findNames(path: string, epCount: number): Promise<EpName[]> {
 
         nameList.push(name)
     }
-    const sortNameList = nameList.sort((a, b) => b.length - a.length)
+    //const sortNameList = nameList.sort((a, b) => b.length - a.length)
     // console.log(nameList)
-    const mainName = sortNameList[Math.floor(epCount / 2)]
-    // console.log(mainName)
-    const match = findBestMatch(mainName, nameList)
+    const sampleName = findSample(nameList)
+
+    // console.log(sampleName)
+    const match = findBestMatch(sampleName, nameList)
     const names = match.ratings.filter(p => p.rating > 0.9)
         .flatMap(p => p.target)
     //console.log(names)
-    // const keys = numIndex(mainName);
+    const keys = numIndex(sampleName);
     //console.log(keys)
-    const info = numIndex(mainName).find(d => {
+    const info = numIndex(sampleName).find(d => {
         const tmp = names.map(n => n.substring(0, d.index))
         //console.log(tmp);
         return isSame(tmp)
@@ -134,6 +151,7 @@ function conveter(item: Item) {
         status: "Ended",
         displayseason: "",
         displayepisode: "",
+        id: item.id.toString()
     }
     const nfo: TvshowInfo = { tvshow }
     return nfo
@@ -160,7 +178,8 @@ function conveterEp(ep: EpItem) {
             title: title,
             sorttitle: ep.name,
             season: season,
-            episode: ep.sort.toString()
+            episode: ep.sort.toString(),
+            id: ep.id.toString()
         }
     }
     return epInfo;
@@ -189,6 +208,7 @@ async function saveEpNfo(nfo: EpisodeDetailsInfo, path: string, name: string) {
     await fs.promises.writeFile(Path.join(path, `${Path.parse(name).name}.nfo`), xml, "utf-8")
 }
 
+
 export async function makeNfo(path: string) {
     const item = await readData(path)
     const nfo = conveter(item)
@@ -198,23 +218,36 @@ export async function makeNfo(path: string) {
     //await saveSeasonNfo(season, path)
 
     const names = await findNames(path, item.eps_count)
-    console.log(names)
+    //console.log(names)
     for (const name of names) {
         const epItems = item.eps as EpItem[]
         let ep = epItems.filter(ep => ep.type === 0)
             .find(ep => ep.sort === name.ep)
+        let epNfo: EpisodeDetailsInfo;
         if (!ep) {
             ep = epItems.filter(ep => ep.type === 1)
                 .find(ep => ep.sort === name.ep)
             if (!ep) {
-                continue
+                epNfo = {
+                    episodedetails: {
+                        title: name.name,
+                        sorttitle: name.name,
+                        season: "0",
+                        episode: name.ep.toString(),
+                    }
+                }
+            } else {
+                epNfo = conveterEp(ep)
             }
+        } else {
+            epNfo = conveterEp(ep)
         }
         //  const nameInfo = Path.parse(name.name)
         // const epName = `.S01E${name.ep.toString().padStart(2, "0")}`
         // const newName = nameInfo.name + epName + nameInfo.ext
         // await fs.promises.rename(Path.join(path, name.name), Path.join(path, newName))
-        const epNfo = conveterEp(ep)
+        // let epNfo = conveterEp(ep)
+        console.log(name.name)
         await saveEpNfo(epNfo, path, name.name)
     }
 }
@@ -225,9 +258,9 @@ export async function makeNfo(path: string) {
 
 async function test() {
     const item = await testRead()
-    console.log(item)
+    //console.log(item)
     const nfo = conveter(item)
-    console.log(nfo)
+    //console.log(nfo)
     await saveNfo(nfo, "output")
 
     const names = await findNames("tests", item.eps_count)

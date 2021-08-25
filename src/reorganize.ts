@@ -67,22 +67,28 @@ async function reorganizeAll(root: string, deep: number) {
 async function updateInfoAll(root: string, deep: number) {
     const dirs = await scan(root, deep);
     console.log(dirs)
-    await Promise.all(dirs.map(dir => updateInfo(dir)));
+    for (const dir of dirs) {
+        console.log(dir)
+        await updateInfo(dir)
+        //await makeNfo(dir)
+    }
 }
 
 async function updateNfoAll(root: string, deep: number) {
     const dirs = await scan(root, deep);
-    for (const dir of dirs) {
-        console.log(dir)
-        await makeNfo(dir)
-    }
-    //await Promise.all(dirs.map(dir => makeNfo(dir)));
+    // for (const dir of dirs) {
+    //     console.log(dir)
+    //     await makeNfo(dir)
+    // }
+    await Promise.all(dirs.map(dir => makeNfo(dir)));
 }
+
+
 
 //reorganizeAll(Path.join("/Volumes/pt", "新番"), 1)
 //updateInfoAll(Path.join("/Volumes/pt", "新番"), 2)
 //console.log("fate/stay night".replace(/\//gi, " "));
-
-updateNfoAll(Path.join("/Volumes/pt", "新番", "2020s"), 1)
-
-//makeNfo(Path.join("/Volumes/pt", "新番", "2020s", "2021-04", "86 -不存在的战区-"))
+updateNfoAll(Path.join("/Volumes/anime", "2020s"), 1)
+//updateInfoAll(Path.join("/Volumes/anime/", "2020s",), 1)
+//updateInfo(Path.join("/Volumes/anime/2020s/", "2020-04", "ARTE"))
+//makeNfo(Path.join("/Volumes/anime/2020s/2020-04/噬血狂袭 IV"))

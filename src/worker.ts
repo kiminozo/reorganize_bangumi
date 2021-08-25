@@ -6,6 +6,7 @@ import Path = require('path');
 import { downImage } from "./download";
 import { extract } from "./match";
 import { scan, move } from "./files";
+import { makeNfo } from "./nfoConveter";
 
 function sleep(ms): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -29,6 +30,8 @@ async function search(keyword: string): Promise<bgm.Item> {
     return item;
 }
 
+const imageDownloader: Promise<unknown>[] = []
+
 async function saveItem(path: string, item: bgm.Item) {
     //let dir = Path.join("output", bgm.sort_out_path(item));
     // try {
@@ -37,9 +40,9 @@ async function saveItem(path: string, item: bgm.Item) {
 
     // }
     await fs.promises.writeFile(Path.join(path, "data.json"), JSON.stringify(item, null, 1));
-    await downImage(item.images.large, Path.join(path, "Poster.jpg"));
+    await makeNfo(path)
+    imageDownloader.push(downImage(item.images.large, Path.join(path, "Poster.jpg")));
 }
-
 
 
 const output = "output.log";
@@ -79,20 +82,21 @@ export class Worker {
                 const item = await search(keyword);
                 if (item != null) {
                     await saveItem(path, item);
-                    console.log(colors.green(bgm.title(item)));
-                    const desc = Path.join(this.desc, bgm.sort_out_path(item));
+                    const descPath = bgm.sort_out_path(item)
+                    console.log(colors.green(descPath));
+                    const desc = Path.join(this.desc, descPath);
                     try {
                         await move(path, desc);
                         await log(`${path} --> ${desc}`);
                     } catch (error) {
                         console.log(colors.red(error.message));
-                        await this.backup(path, Path.join("429", bgm.sort_out_path(item)));
+                        await this.backup(path, Path.join("重复", descPath));
                         await log(`${path} --> move failed`);
 
                     }
                 } else {
                     console.log(colors.red("not found"));
-                    await this.backup(path, Path.join("404", name));
+                    await this.backup(path, Path.join("未找到", name));
                     await log(`${path} --> not found `);
                 }
                 await sleep(1000);
@@ -100,6 +104,8 @@ export class Worker {
                 await log(`${path} --> extract error `);
             }
         }
+        await Promise.all(imageDownloader)
+        console.log(colors.green("图片全部下载完成"));
     }
 
     private async backup(srcPath: string, descPath: string) {
@@ -113,9 +119,9 @@ export class Worker {
     }
 }
 
-async function test() {
-    const item = await search("街角魔族")
-    saveItem("tests", item)
-    console.log(item)
-}
-test();
+// async function test() {
+//     const item = await search("街角魔族")
+//     saveItem("tests", item)
+//     console.log(item)
+// }
+// test();
