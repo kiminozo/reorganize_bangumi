@@ -179,7 +179,8 @@ function conveterEp(ep: EpItem) {
             sorttitle: ep.name,
             season: season,
             episode: ep.sort.toString(),
-            id: ep.id.toString()
+            id: ep.id.toString(),
+            releasedate: ep.airdate
         }
     }
     return epInfo;
