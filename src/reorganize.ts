@@ -4,6 +4,7 @@ import * as fs from "fs"
 import Path = require('path');
 import { infoApi } from "./bgm"
 import { makeNfo, matchNames } from "./nfoConveter";
+import { downImage } from "./download";
 const dataFileName = "data.json";
 
 const output = "output.log";
@@ -58,8 +59,9 @@ async function updateInfo(path: string): Promise<void> {
         return;
     }
     await fs.promises.writeFile(Path.join(path, "data.json"), JSON.stringify(newItem, null, 1));
-
+    //await downImage(item.images.large, Path.join(path, "Poster.jpg"))
 }
+
 
 
 async function reorganizeAll(root: string, deep: number) {
@@ -98,7 +100,15 @@ async function updateNfo(path: string) {
     try {
         const files = await fs.promises.readdir(path)
         const mapFiles = files.filter(file => Path.extname(file) === ".nfo")
-        exist = mapFiles.length > 8
+        if (mapFiles.length < 5) {
+            const item = await readData(path);
+            const epItems = item.eps as EpItem[]
+            let count = epItems.filter(ep => ep.type === 0).length
+            console.log(mapFiles.length + "/" + count)
+            exist = mapFiles.length >= count
+        } else {
+            exist = true;
+        }
         if (exist) {
             console.log(mapFiles)
             return
@@ -152,23 +162,23 @@ async function loadError(file: string) {
     const items = errors.map(line => {
         const s = line.split(":")
         return { path: s[0], type: s[1] }
-    }).filter(p => p.type == "BDRip")
+    }).filter(p => p.type == "异常")
     for (const item of items) {
-        //await makeNfo(item.path)
-        await fs.promises.rename(item.path, Path.join("/Volumes/anime/重新整理", Path.basename(item.path)))
+        //await flatFile(item.path)
+        await makeNfo(item.path)
+        // await fs.promises.rename(item.path, Path.join("/Volumes/anime/重新整理", Path.basename(item.path)))
     }
 }
 
 //reorganizeAll(Path.join("/Volumes/pt", "新番"), 1)
 //updateInfoAll(Path.join("/Volumes/pt", "新番"), 2)
 //console.log("fate/stay night".replace(/\//gi, " "));
-
 //updateNfoAll(Path.join("/Volumes/anime", "2010s"), 1)
 
-
+//
 //updateInfoAll(Path.join("/Volumes/anime/", "2010s",), 1)
 //updateInfo(Path.join("/Volumes/anime/2020s/", "2020-04", "ARTE"))
-makeNfo("/Volumes/anime/2010s/2014-01/妄想学生会＊")
+//makeNfo("/Volumes/anime/2010s/2014-04/JOJO的奇妙冒险 星尘斗士 埃及篇")
 
 //flatFile(Path.join("/Volumes/anime/2010s", "2019-10/高分少女 第二季"))
 //loadError("nfo-output.log")

@@ -98,7 +98,8 @@ async function findNames(path: string, epCount: number): Promise<EpName[]> {
         return []
     }
     if (nameList.length < epCount) {
-        console.log(`文件未齐${path}`)
+        console.log(`文件未齐 ${nameList.length}/${epCount}`)
+        //console.log(nameList)
         log(path + ":文件未齐")
         return []
     }
@@ -244,17 +245,18 @@ export async function makeNfo(path: string) {
     await saveNfo(nfo, path)
     //const season = conveterSeason(item)
     //await saveSeasonNfo(season, path)
-
     let names: EpName[]
+    const epItems = item.eps as EpItem[]
+    let count = epItems.filter(ep => ep.type === 0).length
     try {
-        names = await findNames(path, item.eps_count)
+        names = await findNames(path, count)
     } catch (error) {
+        console.log(error)
         log(path + ":异常")
         return
     }
     //console.log(names)
     for (const name of names) {
-        const epItems = item.eps as EpItem[]
         let ep = epItems.filter(ep => ep.type === 0)
             .find(ep => ep.sort === name.ep)
         let epNfo: EpisodeDetailsInfo;
