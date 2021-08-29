@@ -116,7 +116,9 @@ async function getInfo(user: string) {
     db.save(dataList);
 }
 
-getInfo("kiminozo");
+
+
+//getInfo("kiminozo");
 
 
 

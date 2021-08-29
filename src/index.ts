@@ -8,8 +8,14 @@ async function main() {
     const src = Path.join(root, "未整理");
     const desc = Path.join(root, "新番")
     const backup = Path.join(root, "失败")
-    const worker = new Worker(src, desc, { deeps: 0, backup });
+    const worker = new Worker(src, { deeps: 0, desc, backup });
     worker.start();
 }
 
-main();
+async function aria2() {
+    const root = "/Volumes/aria2";
+    const worker = new Worker(root, { deeps: 0 });
+    worker.start();
+}
+
+aria2();

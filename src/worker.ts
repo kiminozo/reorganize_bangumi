@@ -44,6 +44,17 @@ async function saveItem(path: string, item: bgm.Item) {
     imageDownloader.push(downImage(item.images.large, Path.join(path, "Poster.jpg")));
 }
 
+async function readData(path: string): Promise<bgm.Item | null> {
+    try {
+        const filePath = Path.join(path, "data.json");
+        const data = await fs.promises.readFile(filePath, 'utf-8');
+        const item: bgm.Item = JSON.parse(data);
+        return item;
+    } catch (error) {
+        return null;
+    }
+
+}
 
 const output = "output.log";
 async function log(text: string) {
@@ -52,22 +63,22 @@ async function log(text: string) {
 
 interface Config {
     deeps: number;
+    desc?: string;
     backup?: string
 }
 
 export class Worker {
     private readonly src: string;
-    private readonly desc: string;
     private readonly config: Config;
 
-    constructor(src: string, desc: string, config: { deeps: number, backup?: string }) {
+    constructor(src: string, config: Config) {
         this.src = src;
-        this.desc = desc;
         this.config = config;
     }
 
     async start() {
         let paths = await scan(this.src, this.config.deeps);
+        const tmp = paths.filter(p => !p.startsWith("#") || !p.startsWith("."))
         console.log(paths);
         await this.run(paths);
     }
@@ -75,34 +86,46 @@ export class Worker {
     private async run(paths: string[]) {
         for (const path of paths) {
             const name = Path.basename(path);
-            const keyword = extract(name);
-
-            console.log(colors.yellow(`${name} --> ${keyword}`));
-            if (keyword) {
-                const item = await search(keyword);
-                if (item != null) {
-                    await saveItem(path, item);
-                    const descPath = bgm.sort_out_path(item)
-                    console.log(colors.green(descPath));
-                    const desc = Path.join(this.desc, descPath);
-                    try {
-                        await move(path, desc);
-                        await log(`${path} --> ${desc}`);
-                    } catch (error) {
-                        console.log(colors.red(error.message));
-                        await this.backup(path, Path.join("重复", descPath));
-                        await log(`${path} --> move failed`);
-
-                    }
-                } else {
-                    console.log(colors.red("not found"));
-                    await this.backup(path, Path.join("未找到", name));
-                    await log(`${path} --> not found `);
-                }
-                await sleep(1000);
-            } else {
-                await log(`${path} --> extract error `);
+            if (name.startsWith("#") || name.startsWith(".")) {
+                continue
             }
+            let item = await readData(path);
+            if (item) {
+                continue
+            }
+
+            const keyword = extract(name);
+            console.log(colors.yellow(`${name} --> ${keyword}`));
+            if (!keyword) {
+                await log(`${path} --> extract error `);
+                continue
+            }
+            item = await search(keyword);
+            if (item == null) {
+                console.log(colors.red("not found"));
+                if (!this.config.desc || !this.config.backup) {
+                    continue
+                }
+                await this.backup(path, Path.join("未找到", name));
+                await log(`${path} --> not found `);
+            }
+
+            await saveItem(path, item);
+            if (!this.config.desc) {
+                continue
+            }
+            const descPath = bgm.sort_out_path(item)
+            console.log(colors.green(descPath));
+            const desc = Path.join(this.config.desc, descPath);
+            try {
+                await move(path, desc);
+                await log(`${path} --> ${desc}`);
+            } catch (error) {
+                console.log(colors.red(error.message));
+                await this.backup(path, Path.join("重复", descPath));
+                await log(`${path} --> move failed`);
+            }
+            await sleep(1000);
         }
         await Promise.all(imageDownloader)
         console.log(colors.green("图片全部下载完成"));

@@ -6,7 +6,7 @@ import { Builder } from 'xml2js'
 import { findBestMatch } from "string-similarity";
 const builder = new Builder()
 
-const videoExts: Set<string> = new Set([".mp4", ".mkv", ".rmvb"])
+const videoExts: Set<string> = new Set([".mp4", ".mkv", ".rmvb", ".FLV"])
 const dataFileName = "data.json";
 
 async function testRead(): Promise<Item> {
@@ -46,6 +46,32 @@ function findSample(list: string[]): string {
     return values.find(p => p.length == max)[Math.floor(max / 2)];
 }
 
+export function matchNames(nameList: string[]): EpName[] {
+    //const sortNameList = nameList.sort((a, b) => b.length - a.length)
+    // console.log(nameList)
+    const sampleName = findSample(nameList)
+
+    //console.log(sampleName)
+    const match = findBestMatch(sampleName, nameList)
+    const rating = 3 / sampleName.length
+    const names = match.ratings.filter(p => p.rating > rating)
+        .flatMap(p => p.target)
+    //console.log(names)
+    // const keys = numIndex(sampleName);
+    //console.log(keys)
+    const info = numIndex(sampleName).find(d => {
+        const tmp = names.map(n => n.substring(0, d.index))
+        //console.log(tmp);
+        return isSame(tmp)
+    })
+
+    //[Airota & Nekomoe kissaten][Machikado Mazoku][01][720p][CHS]
+    //console.log(info)
+    const epNames = names.flatMap(n => { return { ep: epNum(n, info.index), name: n } })
+        .sort((a, b) => a.ep - b.ep)
+    return epNames
+}
+
 async function findNames(path: string, epCount: number): Promise<EpName[]> {
     const files = await fs.promises.readdir(path)
 
@@ -64,28 +90,18 @@ async function findNames(path: string, epCount: number): Promise<EpName[]> {
 
         nameList.push(name)
     }
-    //const sortNameList = nameList.sort((a, b) => b.length - a.length)
-    // console.log(nameList)
-    const sampleName = findSample(nameList)
-
-    // console.log(sampleName)
-    const match = findBestMatch(sampleName, nameList)
-    const names = match.ratings.filter(p => p.rating > 0.9)
-        .flatMap(p => p.target)
-    //console.log(names)
-    const keys = numIndex(sampleName);
-    //console.log(keys)
-    const info = numIndex(sampleName).find(d => {
-        const tmp = names.map(n => n.substring(0, d.index))
-        //console.log(tmp);
-        return isSame(tmp)
-    })
-
-    //[Airota & Nekomoe kissaten][Machikado Mazoku][01][720p][CHS]
-    //console.log(info)
-    const epNames = names.flatMap(n => { return { ep: epNum(n, info.index), name: n } })
-        .sort((a, b) => a.ep - b.ep)
-    return epNames
+    if (nameList.length == 0) {
+        console.log(`文件未找到${path}`)
+        log(path + ":文件未找到")
+        return []
+    }
+    if (nameList.length < epCount) {
+        console.log(`文件未齐${path}`)
+        log(path + ":文件未齐")
+        return []
+    }
+    //console.log(nameList)
+    return matchNames(nameList)
 }
 
 interface NumIndexData {
@@ -186,6 +202,11 @@ function conveterEp(ep: EpItem) {
     return epInfo;
 }
 
+const output = "nfo-output.log";
+async function log(text: string) {
+    await fs.promises.appendFile(output, text + "\r\n");
+}
+
 async function saveNfo(nfo: TvshowInfo, path: string) {
     const xml = builder.buildObject(nfo);
     //console.log(xml)
@@ -218,7 +239,13 @@ export async function makeNfo(path: string) {
     //const season = conveterSeason(item)
     //await saveSeasonNfo(season, path)
 
-    const names = await findNames(path, item.eps_count)
+    let names: EpName[]
+    try {
+        names = await findNames(path, item.eps_count)
+    } catch (error) {
+        log(path + ":异常")
+        return
+    }
     //console.log(names)
     for (const name of names) {
         const epItems = item.eps as EpItem[]
@@ -233,8 +260,8 @@ export async function makeNfo(path: string) {
                     episodedetails: {
                         title: name.name,
                         sorttitle: name.name,
-                        season: "0",
-                        episode: name.ep.toString(),
+                        season: names.length == 1 ? "1" : "0",
+                        episode: name.ep ? name.ep.toString() : "1",
                     }
                 }
             } else {
