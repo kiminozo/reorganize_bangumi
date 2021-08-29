@@ -70,7 +70,7 @@ export function matchNames(nameList: string[], count: number = 12): EpName[] {
     // console.log(info)
     const epNames = names.flatMap(n => { return { ep: epNum(n, info.index), name: n } })
         .sort((a, b) => a.ep - b.ep)
-    //console.log(epNames)
+    // console.log(epNames)
     return epNames
 }
 
@@ -266,8 +266,8 @@ export async function makeNfo(path: string) {
                     episodedetails: {
                         title: name.name,
                         sorttitle: name.name,
-                        season: names.length == 1 ? "1" : "0",
-                        episode: name.ep ? name.ep.toString() : "1",
+                        season: epItems.length == 1 ? "1" : "0",
+                        episode: (name.ep && name.ep < epItems.length + 10) ? name.ep.toString() : "1",
                     }
                 }
             } else {
