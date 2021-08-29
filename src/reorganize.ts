@@ -168,7 +168,7 @@ async function loadError(file: string) {
 
 //updateInfoAll(Path.join("/Volumes/anime/", "2010s",), 1)
 //updateInfo(Path.join("/Volumes/anime/2020s/", "2020-04", "ARTE"))
-//makeNfo("/Volumes/anime/2010s/2013-04/打工吧！魔王大人")
+makeNfo("/Volumes/anime/2010s/2014-01/妄想学生会＊")
 
 //flatFile(Path.join("/Volumes/anime/2010s", "2019-10/高分少女 第二季"))
 //loadError("nfo-output.log")

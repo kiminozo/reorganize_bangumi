@@ -46,7 +46,7 @@ function findSample(list: string[]): string {
     return values.find(p => p.length == max)[Math.floor(max / 2)];
 }
 
-export function matchNames(nameList: string[]): EpName[] {
+export function matchNames(nameList: string[], count: number = 12): EpName[] {
     //const sortNameList = nameList.sort((a, b) => b.length - a.length)
     // console.log(nameList)
     const sampleName = findSample(nameList)
@@ -58,17 +58,19 @@ export function matchNames(nameList: string[]): EpName[] {
         .flatMap(p => p.target)
     //console.log(names)
     // const keys = numIndex(sampleName);
-    //console.log(keys)
+    // console.log(numIndex(sampleName))
     const info = numIndex(sampleName).find(d => {
         const tmp = names.map(n => n.substring(0, d.index))
-        //console.log(tmp);
-        return isSame(tmp)
+        //  console.log(tmp);
+        return isSame(sampleName.substring(0, d.index), tmp, count)
     })
 
     //[Airota & Nekomoe kissaten][Machikado Mazoku][01][720p][CHS]
-    //console.log(info)
+    // console.log("key：")
+    // console.log(info)
     const epNames = names.flatMap(n => { return { ep: epNum(n, info.index), name: n } })
         .sort((a, b) => a.ep - b.ep)
+    //console.log(epNames)
     return epNames
 }
 
@@ -101,7 +103,7 @@ async function findNames(path: string, epCount: number): Promise<EpName[]> {
         return []
     }
     //console.log(nameList)
-    return matchNames(nameList)
+    return matchNames(nameList, epCount)
 }
 
 interface NumIndexData {
@@ -125,25 +127,29 @@ function numIndex(name: string): NumIndexData[] {
 }
 
 function epNum(name: string, index: number): number {
+    //console.log(name)
     const test = name.substring(index, name.length - 1)
-    //console.log(test)
+    //console.log("test:" + test)
     const regexp = /\d+(\.\d)?/g;
     const m = regexp.exec(test);
     if (m) {
-        //  console.log(m[0])
+        // console.log(m[0])
         return parseFloat(m[0])
     }
 
 }
 
 
-function isSame(names: string[]) {
-    return names.reduce((a, b) => {
-        if (a.val !== b) {
-            a.same = false
+function isSame(base: string, names: string[], count: number) {
+    //console.log(names)
+    const sameCount = names.reduce((a, b) => {
+        if (a.val === b) {
+            a.same = a.same + 1
         }
         return a
-    }, { same: true, val: names[0] }).same
+    }, { same: 1, val: base }).same
+    //console.log("same:" + sameCount + "/" + count)
+    return sameCount >= count
 }
 
 
@@ -275,7 +281,7 @@ export async function makeNfo(path: string) {
         // const newName = nameInfo.name + epName + nameInfo.ext
         // await fs.promises.rename(Path.join(path, name.name), Path.join(path, newName))
         // let epNfo = conveterEp(ep)
-        console.log(name.name)
+        console.log(`S${epNfo.episodedetails.season}E${epNfo.episodedetails.episode}:${name.name}`)
         await saveEpNfo(epNfo, path, name.name)
     }
 }
