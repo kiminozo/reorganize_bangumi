@@ -117,7 +117,7 @@ export function title(item: Item | null) {
     return t.replace(/\//gi, " ");
 }
 
-export function quarter(date: Date): string {
+export function quarter(date: Date, short: boolean = false): string {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     let years: string;
@@ -131,6 +131,9 @@ export function quarter(date: Date): string {
         years = "2010s"
     } else {
         years = "2020s"
+    }
+    if (short) {
+        return years;
     }
     let quarter: string;
     if (month <= 3) {

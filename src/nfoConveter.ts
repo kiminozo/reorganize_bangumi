@@ -6,7 +6,7 @@ import { Builder } from 'xml2js'
 import { findBestMatch } from "string-similarity";
 const builder = new Builder()
 
-const videoExts: Set<string> = new Set([".mp4", ".mkv", ".rmvb", ".FLV"])
+const videoExts: Set<string> = new Set([".mp4", ".mkv", ".rmvb", ".flv"])
 const dataFileName = "data.json";
 
 async function testRead(): Promise<Item> {
@@ -61,13 +61,17 @@ export function matchNames(nameList: string[], count: number = 12): EpName[] {
     // console.log(numIndex(sampleName))
     const info = numIndex(sampleName).find(d => {
         const tmp = names.map(n => n.substring(0, d.index))
-        //  console.log(tmp);
+        //console.log(tmp);
         return isSame(sampleName.substring(0, d.index), tmp, count)
     })
 
     //[Airota & Nekomoe kissaten][Machikado Mazoku][01][720p][CHS]
     // console.log("key：")
-    // console.log(info)
+
+    if (info == null) {
+        console.log("找不到info", info)
+        return []
+    }
     const epNames = names.flatMap(n => { return { ep: epNum(n, info.index), name: n } })
         .sort((a, b) => a.ep - b.ep)
     // console.log(epNames)
@@ -83,7 +87,7 @@ async function findNames(path: string, epCount: number): Promise<EpName[]> {
             continue
         }
         const ext = Path.extname(name)
-        if (!videoExts.has(ext)) {
+        if (!videoExts.has(ext.toLowerCase())) {
             continue
         }
         if ((await fs.promises.stat(Path.join(path, name))).isDirectory()) {
@@ -99,12 +103,16 @@ async function findNames(path: string, epCount: number): Promise<EpName[]> {
     }
     if (nameList.length < epCount) {
         console.log(`文件未齐 ${nameList.length}/${epCount}`)
-        //console.log(nameList)
+        console.log(nameList)
         log(path + ":文件未齐")
         return []
     }
     //console.log(nameList)
-    return matchNames(nameList, epCount)
+    const matchs = matchNames(nameList, epCount)
+    if (!matchs || matchs.length === 0) {
+        log(path + ":无法匹配")
+    }
+    return matchs
 }
 
 interface NumIndexData {
