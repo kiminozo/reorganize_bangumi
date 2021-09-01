@@ -24,7 +24,7 @@ async function readData(path: string): Promise<Item | null> {
 
 }
 
-async function reorganizePath(root: string, path: string): Promise<void> {
+async function reorganizePath(root: string, path: string, short: boolean): Promise<void> {
     const item = await readData(path);
     if (!item) {
         return;
@@ -32,8 +32,8 @@ async function reorganizePath(root: string, path: string): Promise<void> {
     try {
         // const desc = Path.join(root, sort_out_path(item));
         const basename = Path.basename(path);
-        const descRoot = Path.dirname(Path.dirname(path));
-        const desc = Path.join(descRoot, quarter(new Date(item.air_date)), basename);
+        //const descRoot = Path.dirname(Path.dirname(path));
+        const desc = Path.join(root, quarter(new Date(item.air_date), short), basename);
         await move(path, desc);
         console.log(`move ${path} --> ${desc} `);
         await log(`move ${path} --> ${desc} `);
@@ -66,7 +66,7 @@ async function updateInfo(path: string): Promise<void> {
 
 async function reorganizeAll(root: string, deep: number) {
     const dirs = await scan(root, deep);
-    await Promise.all(dirs.map(dir => reorganizePath(root, dir)));
+    await Promise.all(dirs.map(dir => reorganizePath(root, dir, true)));
 }
 
 async function updateInfoAll(root: string, deep: number) {
@@ -86,7 +86,7 @@ async function updateNfoAll(root: string, deep: number) {
     const dirs = await scan(root, deep);
     for (const dir of dirs) {
         console.log(dir)
-        await updateNfo(dir)
+        await makeNfo(dir)
     }
     //   await waitAllLimit(dirs, 2, path => updateNfo(path));
 }
@@ -140,7 +140,7 @@ async function flatFile(path: string) {
                 names.push(file)
             }
         }
-        const epNames = matchNames(names)
+        const epNames = matchNames(names, names.length)
         console.log(epNames)
         for (const ep of epNames) {
             const children = await fs.promises.readdir(Path.join(path, ep.name))
@@ -162,23 +162,24 @@ async function loadError(file: string) {
     const items = errors.map(line => {
         const s = line.split(":")
         return { path: s[0], type: s[1] }
-    }).filter(p => p.type == "异常")
+    })
+    //.filter(p => p.type == "异常")
     for (const item of items) {
         //await flatFile(item.path)
-        await makeNfo(item.path)
-        // await fs.promises.rename(item.path, Path.join("/Volumes/anime/重新整理", Path.basename(item.path)))
+        // await makeNfo(item.path)
+        await fs.promises.rename(item.path, Path.join("/Volumes/anime/重新整理", Path.basename(item.path)))
     }
 }
 
-//reorganizeAll(Path.join("/Volumes/pt", "新番"), 1)
+//reorganizeAll(Path.join("/Volumes/anime/", "高清"), 2)
 //updateInfoAll(Path.join("/Volumes/pt", "新番"), 2)
 //console.log("fate/stay night".replace(/\//gi, " "));
 //updateNfoAll(Path.join("/Volumes/anime", "2010s"), 1)
 
 //
-//updateInfoAll(Path.join("/Volumes/anime/", "2010s",), 1)
+//updateNfoAll("/Volumes/hd/", 1)
 //updateInfo(Path.join("/Volumes/anime/2020s/", "2020-04", "ARTE"))
 //makeNfo("/Volumes/anime/2010s/2014-04/JOJO的奇妙冒险 星尘斗士 埃及篇")
 
-//flatFile(Path.join("/Volumes/anime/2010s", "2019-10/高分少女 第二季"))
+//makeNfo(Path.join("/Volumes/hd/2010s/四月是你的谎言"))
 //loadError("nfo-output.log")
