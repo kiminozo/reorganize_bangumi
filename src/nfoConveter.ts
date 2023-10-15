@@ -172,7 +172,7 @@ function conveter(item: Item) {
         showtitle: title,
         plot: summary,
         outline: summary,
-        rating: item.rating.score.toString(),
+        rating: item.rating?.score?.toString(),
         year: "",
         premiered: item.air_date,
         releasedate: item.air_date,
@@ -255,6 +255,10 @@ export async function makeNfo(path: string) {
     //await saveSeasonNfo(season, path)
     let names: EpName[]
     const epItems = item.eps as EpItem[]
+    if (epItems == null) {
+        console.error("eps is null")
+        return
+    }
     let count = epItems.filter(ep => ep.type === 0).length
     try {
         names = await findNames(path, count)

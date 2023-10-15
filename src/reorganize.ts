@@ -171,7 +171,7 @@ async function loadError(file: string) {
     }
 }
 
-//reorganizeAll(Path.join("/Volumes/anime/", "高清"), 2)
+//reorganizeAll(Path.join("/Volumes/drama/"), 2)
 //updateInfoAll(Path.join("/Volumes/pt", "新番"), 2)
 //console.log("fate/stay night".replace(/\//gi, " "));
 //updateNfoAll(Path.join("/Volumes/anime", "2010s"), 1)
@@ -179,7 +179,7 @@ async function loadError(file: string) {
 //
 //updateNfoAll("/Volumes/hd/", 1)
 //updateInfo(Path.join("/Volumes/anime/2020s/", "2020-04", "ARTE"))
-//makeNfo("/Volumes/anime/2010s/2014-04/JOJO的奇妙冒险 星尘斗士 埃及篇")
+makeNfo("/Volumes//hd/2000s/你所期望的永远")
 
 //makeNfo(Path.join("/Volumes/hd/2010s/四月是你的谎言"))
 //loadError("nfo-output.log")

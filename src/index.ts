@@ -1,14 +1,15 @@
 import { Worker } from "./worker";
 import Path = require('path');
+import { BgmType } from "./bgm";
 
 
 async function main() {
     const root = "/Volumes/anime";
     //  const root = "output";
-    const src = Path.join(root, "未整理");
+    const src = Path.join(root, "#未整理");
     const desc = Path.join(root)
-    const backup = Path.join(root, "失败")
-    const worker = new Worker(src, { deeps: 0, desc, backup });
+    const backup = Path.join(root, "#失败")
+    const worker = new Worker(src, { deeps: 0, desc, backup, type: BgmType.anime });
     worker.start();
 }
 

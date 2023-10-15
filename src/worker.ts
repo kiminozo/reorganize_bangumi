@@ -7,6 +7,7 @@ import { downImage } from "./download";
 import { extract } from "./match";
 import { scan, move } from "./files";
 import { makeNfo } from "./nfoConveter";
+import { title } from "./bgm";
 
 function sleep(ms): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -14,18 +15,18 @@ function sleep(ms): Promise<void> {
 
 
 
-async function search(keyword: string): Promise<bgm.Item> {
+async function search(keyword: string, type: bgm.BgmType): Promise<bgm.Item> {
     //console.log(colors.gray(line));
     //let keyword = extract(line);
     //console.log(colors.yellow(keyword));
     //await tvInfo(keyword);
-    let item = await bgm.searchApi(keyword);
+    let item = await bgm.searchApi(keyword, type);
     if (item === null) {
         let jpName = await kitsu.searchApi(keyword);
         if (jpName == null) {
             return null;
         }
-        item = await bgm.searchApi(jpName);
+        item = await bgm.searchApi(jpName, type);
     }
     return item;
 }
@@ -65,6 +66,8 @@ interface Config {
     deeps: number;
     desc?: string;
     backup?: string
+    rename?: boolean
+    type?: bgm.BgmType
 }
 
 export class Worker {
@@ -91,16 +94,19 @@ export class Worker {
             }
             let item = await readData(path);
             if (item) {
-                continue
+                if (!this.config.backup) {
+                    continue
+                }
+            } else {
+                const keyword = extract(name);
+                console.log(colors.yellow(`${name} --> ${keyword}`));
+                if (!keyword) {
+                    await log(`${path} --> extract error `);
+                    continue
+                }
+                item = await search(keyword, this.config.type ? this.config.type : bgm.BgmType.anime);
             }
 
-            const keyword = extract(name);
-            console.log(colors.yellow(`${name} --> ${keyword}`));
-            if (!keyword) {
-                await log(`${path} --> extract error `);
-                continue
-            }
-            item = await search(keyword);
             if (item == null) {
                 console.log(colors.red("not found"));
                 if (!this.config.desc || !this.config.backup) {
@@ -110,26 +116,54 @@ export class Worker {
                 await log(`${path} --> not found `);
             }
 
-            await saveItem(path, item);
+            const srcPath = await this.sourcePath(path)
+
+            await saveItem(srcPath, item);
             if (!this.config.desc) {
+                if (this.config.rename) {
+                    await move(srcPath, Path.join(Path.dirname(srcPath), title(item)));
+                }
                 continue
             }
             const descPath = bgm.sort_out_path(item)
             console.log(colors.green(descPath));
             const desc = Path.join(this.config.desc, descPath);
             try {
-                await move(path, desc);
-                await log(`${path} --> ${desc}`);
+                await move(srcPath, desc);
+                if (srcPath !== path) {
+                    try {
+                        await fs.promises.unlink(".DS_Store")
+                        await fs.promises.rmdir(path,);
+                    } catch {
+                    }
+                }
+                await log(`${srcPath} --> ${desc}`);
             } catch (error) {
                 console.log(colors.red(error.message));
                 await this.backup(path, Path.join("重复", descPath));
-                await log(`${path} --> move failed`);
+                await log(`${srcPath} --> move failed`);
             }
             await sleep(1000);
         }
         await Promise.all(imageDownloader)
         console.log(colors.green("图片全部下载完成"));
     }
+
+    private async sourcePath(path: string): Promise<string> {
+        const childs = await fs.promises.readdir(path)
+        const files = childs.filter(p => !p.startsWith("."))
+        if (files.length == 1) {
+            const childPath = Path.join(path, files[0])
+            const stat = await fs.promises.lstat(childPath)
+            console.log(`${path} -> ${stat}`)
+            if (stat.isDirectory()) {
+                console.log(`调整到子目录： ${childPath}`);
+                return childPath
+            }
+        }
+        return path
+    }
+
 
     private async backup(srcPath: string, descPath: string) {
         if (this.config.backup) {

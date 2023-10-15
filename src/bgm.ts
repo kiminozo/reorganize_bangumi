@@ -168,13 +168,14 @@ interface SearchResult {
 // };
 
 // const axiosConfig = { httpsAgent: httpsOverHttp({ proxy: proxy }) };
+export enum BgmType { anime = 2, drama = 6 }
 
 
-
-export async function searchApi(word: string): Promise<Item> {
+export async function searchApi(word: string, type: BgmType = BgmType.anime): Promise<Item> {
     //let key = word.replace(/\s/gi, "+");
-    let res = await axios.get<SearchResult>("https://api.bgm.tv/search/subject/" + encodeURI(word) + "?type=2"
-        , { timeout: 15000 });
+    const url = "https://api.bgm.tv/search/subject/" + encodeURI(word) + "?type=" + type.valueOf()
+    console.log(url)
+    const res = await axios.get<SearchResult>(url, { timeout: 15000 });
     if (res.data.list && res.data.list.length > 0) {
         //console.debug(res.data.list);
         let item: Item;
@@ -190,7 +191,7 @@ export async function searchApi(word: string): Promise<Item> {
                 if (new_word && new_word === word) {
                     return null;
                 }
-                return await searchApi(new_word);
+                return await searchApi(new_word, type);
             }
             item = cho;
         }
@@ -203,14 +204,14 @@ export async function searchApi(word: string): Promise<Item> {
     if (newWord && newWord === word) {
         return null;
     }
-    return await searchApi(newWord);
+    return await searchApi(newWord, type);
 }
 
 export async function infoApi(id: number): Promise<Item> {
     //let key = word.replace(/\s/gi, "+");
     let res = await axios.get<Item>("https://api.bgm.tv/subject/" + id + "?responseGroup=large", { timeout: 15000 });
     if (res.data) {
-        console.debug(res.data.images.large);
+        //console.debug(res.data.images.large);
         return res.data;
     }
     return null;
