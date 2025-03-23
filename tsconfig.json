@@ -1,19 +1,17 @@
 {
     "compilerOptions": {
-        "module": "commonjs",   //指定生成哪个模块系统代码
-        "lib":["es2019"],
-        "target": "es6",        //目标代码类型
-        "noImplicitAny": false, //在表达式和声明上有隐含的'any'类型时报错。
-        "sourceMap": true,     //用于debug   
-        "rootDir":"./src",      //仅用来控制输出的目录结构--outDir。
-        "outDir":"./build",     //重定向输出目录。   
-        "watch":true            //在监视模式下运行编译器。会监视输出文件，在它们改变时重新编译。
+      "module": "commonjs",
+      "target": "es6",
+      "lib": ["es2020", "dom"],  // 扩展支持 ES2020 特性（如有需要）
+      "moduleResolution": "node",  // 明确指定 Node.js 风格的模块解析
+      "esModuleInterop": true,     // 解决 CommonJS/ESM 互操作问题
+      "skipLibCheck": true,        // 跳过库类型检查（临时解决潜在冲突）
+      "noImplicitAny": false,
+      "sourceMap": true,
+      "rootDir": "./src",
+      "outDir": "./build",
+      "types": ["node"]           // 明确加载 Node.js 类型定义
     },
-    "include":[
-        "./src/**/*"
-    ],
-    "exclude":[
-        "views",
-        "static"
-    ]
-}
+    "include": ["./src/**/*"],
+    "exclude": ["views", "static"]
+  }
