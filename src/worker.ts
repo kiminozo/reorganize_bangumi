@@ -68,6 +68,7 @@ interface Config {
     backup?: string
     rename?: boolean
     type?: bgm.BgmType
+    shortPath?: boolean
 }
 
 export class Worker {
@@ -125,7 +126,7 @@ export class Worker {
                 }
                 continue
             }
-            const descPath = bgm.sort_out_path(item)
+            const descPath = bgm.sort_out_path(item, this.config.shortPath);
             console.log(colors.green(descPath));
             const desc = Path.join(this.config.desc, descPath);
             try {

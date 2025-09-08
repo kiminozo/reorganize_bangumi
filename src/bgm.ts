@@ -148,11 +148,11 @@ export function quarter(date: Date, short: boolean = false): string {
     return Path.join(years, quarter);
 }
 
-export function sort_out_path(item: Item | null): string {
+export function sort_out_path(item: Item | null, short: boolean = false): string {
     if (item == null) {
         return null;
     }
-    return Path.join(quarter(new Date(item.air_date)), title(item))
+    return Path.join(quarter(new Date(item.air_date), short), title(item))
 }
 
 

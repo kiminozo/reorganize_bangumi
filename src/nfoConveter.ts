@@ -26,7 +26,7 @@ async function readData(path: string): Promise<Item | null> {
 }
 
 interface EpName {
-    name: string
+    name?: string
     ep: number
 }
 
@@ -254,6 +254,10 @@ export async function makeNfo(path: string) {
     //const season = conveterSeason(item)
     //await saveSeasonNfo(season, path)
     let names: EpName[]
+    if (!Array.isArray(item.eps)) {
+        console.error("eps is not an array", item.eps)
+        return
+    }
     const epItems = item.eps as EpItem[]
     if (epItems == null) {
         console.error("eps is null")
